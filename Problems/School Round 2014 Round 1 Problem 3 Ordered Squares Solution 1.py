@@ -11,3 +11,7 @@ if __name__ == '__main__':
     V = int(input('V = '))
     sequance = map(lambda num:num**2,range(V))
     print(', '.join(map(lambda x:str(x),filter(isOrdered,sequance))))
+
+'''
+V = 2000
+'''
