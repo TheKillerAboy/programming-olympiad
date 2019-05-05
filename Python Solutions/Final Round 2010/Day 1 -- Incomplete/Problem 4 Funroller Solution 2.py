@@ -1,4 +1,4 @@
-amount = int(input())
+amount = int(input(''))
 totalpaths = 0
 inner = 0
 inner_index = -1
