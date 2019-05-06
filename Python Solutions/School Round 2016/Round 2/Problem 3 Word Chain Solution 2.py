@@ -68,6 +68,6 @@ I use a set to somewhat increase time complexities
 I then filter out all the chains that aren't in alphabetical order
 !!! This last algorithm should be implemented in solution 1
 
-The object is used ontly to make the main could more readable, because readable code
-it code that can be more easily understood 
+The object is used only to make the main code more readable, because readable code
+is code that can be more easily understood whilst programming
 '''
