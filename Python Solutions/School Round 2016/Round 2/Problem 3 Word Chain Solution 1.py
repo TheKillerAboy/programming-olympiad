@@ -32,8 +32,7 @@ class WordChain:
             return self.w1
 
 def alphabet(words):
-    words.sort()
-    return words[0]
+    return sorted(words)[0]
 
 if __name__ == '__main__':
     connects = set()
@@ -58,7 +57,45 @@ if __name__ == '__main__':
             for connection in connects:
                 if word == connection and connection.other(word) not in chain:
                     chains.append([*chain,connection.other(word)])
+    print(chains)
     print(' '.join(chains[0]))
 '''
 WALL TAIL TALL WALK BALL WAIL TALK
+'''
+
+
+'''
+Solution Explanation:
+    we first find all the links between all the words
+    {
+    for w, w1 in enumerate(words):
+        for w2 in words[w+1:]:
+            if one_diffrent(w1,w2):
+                connects.add(WordChain(w1,w2))
+    }
+    by using the one_diffrent function to see if they are linkable
+    
+    then we find the amount of links a word has
+    {
+    for w, w1 in enumerate(words):
+        for connection in connects:
+            if w1 == connection:
+                counts[w]+=1
+    } 
+    
+    we then find the start of the change, this is the one with the fewest links
+    this is because it is in the start of the chain
+    {
+    key_words = [word for w,word in enumerate(words) if counts[w] == min(counts)]
+    }
+    I use an for generator with checking if a word has the minimum score, as the start 
+    of the chain and the end have the same amount of links
+    
+    The chain starts with the word that is in the begining of the alphabet
+    {
+    chains = [[alphabet(key_words)]]
+    }
+    
+    I then processed to find every link possible with a stack method approciate
+    I then assume the one at index 0 is the correct solution
 '''
