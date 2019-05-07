@@ -26,7 +26,6 @@ if __name__ == '__main__':
     dodgeballs = [int(_) for _ in input('').split(' ')]
     players = {Player(1)}
     for b, ball in enumerate(dodgeballs):
-        print(len(players))
         players_copy = players.copy()
         players.clear()
         for player in players_copy:
