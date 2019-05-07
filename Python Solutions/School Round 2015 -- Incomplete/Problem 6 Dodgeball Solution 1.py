@@ -13,16 +13,20 @@ class Player:
         return self.location<=item<self.location+player_width
 
     def __hash__(self):
-        return self.location
+        return hash((self.location,))
+
+    def __eq__(self, other):
+        return hash(other) == hash(self)
 
     def __repr__(self):
         return f'{self.location} - {self.location+player_width-1}'
 
 if __name__ == '__main__':
     court_size, player_width, L = (int(_) for _ in input('').split(' '))
-    dodgeballs = (int(_) for _ in input('').split(' '))
+    dodgeballs = [int(_) for _ in input('').split(' ')]
     players = {Player(1)}
     for b, ball in enumerate(dodgeballs):
+        print(len(players))
         players_copy = players.copy()
         players.clear()
         for player in players_copy:
