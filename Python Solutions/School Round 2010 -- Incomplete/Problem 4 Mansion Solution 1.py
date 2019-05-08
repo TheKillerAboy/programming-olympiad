@@ -53,15 +53,6 @@ class Path:
     def __eq__(self, other):
         return hash(self) == hash(other)
 
-    def __repr__(self):
-        out = '\n'
-        cells = self.mansion.cells.copy()
-        x,y = self.last
-        cells[y][x] = 'S'
-        for row in cells:
-            out+=''.join(row)+'\n'
-        return out
-
 class Mansion:
     def __init__(self,location):
         self.w,self.h = tuple(location)
@@ -87,9 +78,6 @@ class Mansion:
     def trigger_switch(self,location):
         location = Coor(location)
         self[location] = '$'
-        for next_location in location.next_moves():
-            if next_location in self:
-                self[next_location] = '$'
 
     def copy(self):
         out = Mansion((self.w,self.h))
@@ -109,7 +97,6 @@ Sooooo*'''
     mansion.trigger_switch(mansion.start)
     max_lights = 0
     while len(paths) > 0:
-        print(paths)
         max_lights = max(paths,key = lambda path:path.lights).lights
         paths_copy = paths.copy()
         paths.clear()
