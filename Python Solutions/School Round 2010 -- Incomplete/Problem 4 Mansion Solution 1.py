@@ -87,12 +87,11 @@ class Mansion:
 
 
 if __name__ == '__main__':
-    mansion = Mansion((7,3))
-    cells = '''*oo*ooo
-ooooooo
-Sooooo*'''
-    for row in cells.split('\n'):
-        mansion.append(list(row))
+    h,w = (int(_) for _ in input('How many rows and columns are there? ').split(' '))
+    mansion = Mansion((w,h))
+    print('Enter the grid for the mansion one row per line:')
+    for i in range(h):
+        mansion.append(list(input('')))
     paths = {Path([mansion.start],2,0,mansion)}
     mansion.trigger_switch(mansion.start)
     max_lights = 0
