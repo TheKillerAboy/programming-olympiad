@@ -110,3 +110,11 @@ if __name__ == '__main__':
                         next_path.life = 3
                     paths.add(next_path)
     print(f'I can switch on {max_lights} lights')
+
+'''
+How many rows and columns are there? 3 7
+Enter the grid for the mansion one row per line:
+*oo*ooo
+ooooooo
+Sooooo*
+'''
