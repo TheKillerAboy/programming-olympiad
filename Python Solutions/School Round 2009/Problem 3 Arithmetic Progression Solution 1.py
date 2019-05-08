@@ -46,3 +46,17 @@ if __name__ == '__main__':
     print(f'Number of Arithmetic Progression = {len(progrssions)}')
     print(f'Arithmetic Progression First Term = {min(progrssions,key=lambda prog:prog.start).start}')
     print(f'Arithmetic Progression Common Difference = {gcd(list(map(lambda prog:prog.diffrence,progrssions)))}')
+
+'''
+Enter N: 10
+Enter a number: 1
+Enter a number: 4
+Enter a number: 9
+Enter a number: 16
+Enter a number: 25
+Enter a number: 36
+Enter a number: 49
+Enter a number: 64
+Enter a number: 81
+Enter a number: 100
+'''

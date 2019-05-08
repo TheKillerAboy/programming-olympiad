@@ -45,3 +45,7 @@ if __name__ == '__main__':
 
     print(f'You can form {len(numbers)} numbers')
     print(f'Their sum is {sum(numbers)}')
+
+'''
+What numbers do you have? 15 37 26 1001 32
+'''

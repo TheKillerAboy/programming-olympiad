@@ -46,10 +46,10 @@ class Boundaries:
                 yield (i,j)
 
 if __name__ == '__main__':
-    w = int(input(''))
-    h = int(input(''))
+    w = int(input('Enter the width M: '))
+    h = int(input('Enter the height N: '))
     boundry = Boundaries((w,h))
-    moves = input('')
+    moves = input('Enter the initial instructions: ')
     locations = {Coor((x,y)) for x,y in boundry}
     for move in moves:
         locations_copy = locations.copy()
@@ -83,4 +83,10 @@ if __name__ == '__main__':
                 locationss.add(frozenset(locations))
         minlocs = len(min(locationss,key=lambda locations:len(locations)))
         locationss = {locations for locations in locationss if len(locations) == minlocs}
-    print(counter)
+    print(f'You need to issue a further {counter} instructions.')
+
+'''
+Enter the width M: 100
+Enter the height N: 100
+Enter the initial instructions: lrudrudludlrdlru
+'''
