@@ -6,6 +6,9 @@ They are writen in Python 3 with no PyPi dependencies
 Contributions to alternative solutions are greatly appreciated
 
 *List of Algorithms that need to be optimized:*
-- School Round 2009 Problem Arithmetic Progression Solution 1
+- School Round 2009 Problem 3 Arithmetic Progression Solution 1
 - School Round 2015 Problem 5 Prime Generating Integers Solution 1
 - School Round 2014 Problem 4 Mansion Solution 1
+
+*List of IDEA's for solution of Algorithms:*
+- Final Round 2011 Day 1 Problem 3 Language Chain IDEA 1
