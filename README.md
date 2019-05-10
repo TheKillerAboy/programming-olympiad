@@ -9,7 +9,7 @@ Contributions to alternative solutions are greatly appreciated
 - School Round 2009 Problem 3 Arithmetic Progression Solution 1
 - School Round 2015 Problem 5 Prime Generating Integers Solution 1
 - School Round 2014 Problem 4 Mansion Solution 1
-- Final Round 2012 Day 2 Subway equivalence Problem 1
+- Final Round 2012 Day 2 Problem 3 Subway equivalence Solution 1
 
 *List of IDEA's for solution of Algorithms:*
 - Final Round 2011 Day 1 Problem 3 Language Chain IDEA 1
