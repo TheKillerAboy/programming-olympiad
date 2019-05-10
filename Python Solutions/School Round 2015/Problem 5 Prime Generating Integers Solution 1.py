@@ -1,3 +1,5 @@
+from itertools import count
+
 primes = {2,3,5}
 maxprime = 5
 
@@ -44,15 +46,21 @@ def all_factor_prime(num):
             return False
     return True
 
+def upto(upper):
+    yield 1
+    for i in count(start=2,step=4):
+        if i > upper:
+            break
+        yield i
+
 if __name__ == '__main__':
     upper = int(input('Input: '))
     total = 0
-    for i in range(1,upper+1):
-        if i % 10000 == 0:
+    for i in upto(upper):
+        if i % 10000:
             print(i)
-        if i%2 != 0 or (i%2 == 0 and i%4 != 0):
-            if all_factor_prime(i):
-                total+=i
+        if all_factor_prime(i):
+            total+=i
     print(total)
 
 '''
