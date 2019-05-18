@@ -25,12 +25,12 @@ int main(){
     vector<int> sequance{4, 10, 7, 5, 11, 8, 6, 12, 9, 7, 13, 10, 9, 15, 12, 10, 16, 13, 11, 17, 14, 12, 18, 15, 14};
     vector<vector<int>> pattern(0);
 
-    for (int size = 1; size < sequance.size()>>1; size++) {
+    for (int size = 1; size <= sequance.size()>>1; size++) {
         for(int start = 0; start < sequance.size()-size; start+=size){
-            vector<int> pattern_sequance(0);
+            vector<int> pattern_sequance(size);
             for(int i = start; i < start+size;i++){
                 if(i+1<sequance.size()) {
-                    pattern_sequance.push_back(sequance[i + 1] - sequance[i]);
+                    pattern_sequance[i-start] = (sequance[i + 1] - sequance[i]);
                 }
             }
             if(!(contains(pattern,pattern_sequance))){
@@ -45,8 +45,8 @@ int main(){
         }
     }
 
-    for(int v: pattern[0]){
-        cout<<v<<' ';
+    for(int i = 0;i<pattern[0].size();i++){
+        cout<<pattern[0][i]<<' ';
     }
     cout<<'\n';
 
