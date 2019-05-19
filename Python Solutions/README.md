@@ -14,3 +14,5 @@ Contributions to alternative solutions are greatly appreciated
 
 *List of IDEA's for solution of Algorithms:*
 - Final Round 2011 Day 1 Problem 3 Language Chain IDEA 1
+- Final Round 2018 Day 1 Problem 2 Stones IDEA 1
+- Final Round 2018 Day 2 Problem 2 Coin flips IDEA 1

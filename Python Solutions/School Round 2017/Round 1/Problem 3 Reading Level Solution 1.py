@@ -6,9 +6,13 @@ if __name__ == '__main__':
         if letter.lower() not in ascii_lowercase:
             sentance[l] = ' '
     sentance = ''.join(sentance)
-    sentance = sentance.replace('  ','')
+    while '  ' in sentance:
+        sentance = sentance.replace('  ',' ')
     if sentance[-1] == ' ':
         sentance = sentance[:-1]
+    if sentance[0] == ' ':
+        sentance = sentance[1:]
+    print(sentance)
     sentance = sentance.split(' ')
     print(sum(map(lambda word:len(word),sentance))/len(sentance))
 
