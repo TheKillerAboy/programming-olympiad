@@ -4,9 +4,6 @@
 
 using namespace std;
 
-
-
-
 class Coor{
 private:
     static vector<Coor> offset;
