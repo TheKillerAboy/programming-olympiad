@@ -1,0 +1,11 @@
+__South African Programming Olympiad__
+
+These are my solutions to the South African Programming Olympiad.
+They are writen in C++17
+
+Contributions to alternative solutions are greatly appreciated
+
+*List of Algorithms that need to be optimized:*
+
+*List of IDEA's for solutions to Algorithms:*
+- School_Round_2018 Round_2 Problem_4_Knight_Moves_INCOMPLETE_1
