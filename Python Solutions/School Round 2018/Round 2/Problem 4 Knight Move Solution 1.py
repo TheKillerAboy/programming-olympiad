@@ -1,3 +1,5 @@
+from time import time
+
 moves = ((1, 2),(-1, 2),(1, -2),(-1, -2),(2, 1),(2, -1),(-2, 1),(-2, -1),)
 
 class Knight:
