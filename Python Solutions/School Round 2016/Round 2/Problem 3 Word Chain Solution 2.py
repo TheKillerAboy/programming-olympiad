@@ -32,23 +32,19 @@ def diffrences(w1,w2):
 def one_diffrence(w1,w2):
     return len(list(diffrences(w1,w2))) == 1
 
-def get_element(chains):
-    return next(iter(chains))
-
 def first_in_alphabet(words):
     return sorted(words)[0]
 
 if __name__ == '__main__':
     words = input('Input: ').split(' ')
-    chains = {Chain([word]) for word in words}
-    while len(get_element(chains)) != len(words):
+    chains = [Chain([word]) for word in words]
+    while len(chains[0]) != len(words):
         chains_copy = chains.copy()
         chains.clear()
         for chain in chains_copy:
             for word in words:
                 if word != chain.back and one_diffrence(word,chain.back) and word not in chain:
-                    chains.add(chain.added(word))
-    chains = list(chains)
+                    chains.append(chain.added(word))
     index = 0
     while len(chains)>1:
         index_words = [chain[index] for chain in chains]
