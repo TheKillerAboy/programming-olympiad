@@ -8,3 +8,4 @@ Contributions to alternative solutions are greatly appreciated
 *List of Algorithms that need to be optimized:*
 
 *List of IDEA's for solutions to Algorithms:*
+- Final_Round_2014 Day_1 Problem_2_The_Stables_of_Genghis_Khan_IDEA_1

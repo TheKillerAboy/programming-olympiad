@@ -64,7 +64,7 @@ int main(int argc, char const *argv[]) {
   set<Coor> searched = {start};
   set<Coor> current = {start};
   int distance = 0;
-  for(set<Coor>::iterator it = searched.find(end);it == searched.end();it = searched.find(end)){
+  while(searched.find(end) == searched.end()){
     set<Coor> current_copy = current;
     current.clear();
     for(auto place:current_copy){
