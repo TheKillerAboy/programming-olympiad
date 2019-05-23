@@ -27,7 +27,7 @@ public:
     return Coor(x+other.x,y+other.y);
   }
 
-  bool operator=(Coor two){
+  bool operator==(Coor two){
     return x==two.x && y == two.y;
   }
   bool operator<(const Coor &two)const {
