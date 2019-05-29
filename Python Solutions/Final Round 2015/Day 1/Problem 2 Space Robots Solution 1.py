@@ -64,6 +64,10 @@ class Intersections:
     def get_location(self,item):
         return list(filter(lambda loc:loc.loc == item,self.locations))[0]
 
+‘’’
+Add method to see what unique locations are in self.locations
+‘’’
+
     def count(self):
         for key in self.intersections.keys():
             self.intersections[key].count()
@@ -81,6 +85,9 @@ if __name__ == '__main__':
         for location in (intersections.locations.copy(),intersections.locations.clear())[0]:
             for new_location in intersections.intersections[location.loc].next(location):
                 if new_location in intersections:
+‘’’
+Ise above described method instead
+‘’’
                     intersections.locations.append(new_location)
         intersections.minimize_locations()
         intersections.count()
