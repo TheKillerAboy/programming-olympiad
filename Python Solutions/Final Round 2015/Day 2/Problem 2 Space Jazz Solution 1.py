@@ -1,13 +1,15 @@
 def remove_dubbel(word):
+    word_start = word
     index = 0
     while index < len(word)-1:
         if word[index] == word[index+1]:
             word = word[:index]+word[index+2:]
         else:
             index += 1
-    if len(word) == 2 and word[0] == word[1]:
-        return ''
-    return word
+    if word_start == word:
+        return word
+    else:
+        return remove_dubbel(word)
 
 def add_dubbles(word):
     yield word[0]*2 + word[1:]
