@@ -6,7 +6,6 @@ They are writen in Python 3 with no PyPi dependencies
 Contributions to alternative solutions are greatly appreciated
 
 *List of Algorithms that need to be optimized:*
-- School Round 2009 Problem 3 Arithmetic Progression Solution 1
 - School Round 2015 Problem 5 Prime Generating Integers Solution 1
 - Final Round 2012 Day 2 Problem 3 Subway equivalence Solution 1
 - Final Round 2018 Day 1 Problem 1 Buttons Solution 1
