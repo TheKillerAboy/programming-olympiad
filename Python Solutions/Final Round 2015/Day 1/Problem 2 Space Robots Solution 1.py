@@ -12,13 +12,19 @@ class Coor:
     def __eq__(self, other):
         return hash(tuple(self)) == hash(tuple(other))
 
+    def __hash__(self):
+        return hash(tuple(self))
+
+    def __repr__(self):
+        return f'x: {self.x} y: {self.y} z: {self.z}'
+
 class Intersection:
     order = ['up','north','east']
     def __init__(self, up, north, east):
         self.up,self.north,self.east =  up, north, east
         self.abbr = {'up': self.up, 'north': self.north, 'east': self.east}
         self.stop = 'up'
-        self.counter = 0
+        self.counter = self.abbr[self.stop]
 
     def count(self):
         self.counter-=1
@@ -28,18 +34,23 @@ class Intersection:
 
     def next(self,location):
         if self.stop != 'up':
-            yield Location(location.loc+Coor((0,0,1)),location.time+1)
-            yield Location(location.loc+Coor((0,0,-1)),location.time+1)
+            yield Location(location.loc+Coor((1,0,0)),location.time+1)
+            yield Location(location.loc+Coor((-1,0,0)),location.time+1)
         if self.stop != 'north':
             yield Location(location.loc+Coor((0,1,0)),location.time+1)
             yield Location(location.loc+Coor((0,-1,0)),location.time+1)
         if self.stop != 'east':
-            yield Location(location.loc+Coor((1,0,0)),location.time+1)
-            yield Location(location.loc+Coor((-1,0,0)),location.time+1)
+            yield Location(location.loc+Coor((0,0,1)),location.time+1)
+            yield Location(location.loc+Coor((0,0,-1)),location.time+1)
+
 
 class Location:
     def __init__(self,loc,time):
         self.loc,self.time = loc, time
+
+
+    def __repr__(self):
+        return self.loc.__repr__()
 
 class Intersections:
     def __init__(self):
@@ -50,13 +61,16 @@ class Intersections:
         self.intersections[tuple(name)] = value
 
     def __contains__(self, item):
-        return item in map(lambda loc:loc.loc,self.locations)
+        x,y,z = item
+        return 0<=x<N and 0<=y<M and 0<=z<P
 
     def minimize_locations(self):
         copy = self.locations.copy()
         self.locations = []
         for location in self.intersections.keys():
-            self.locations.append(min(filter(lambda loc:loc.loc == location,copy),key=lambda loc:loc.score))
+            locs = list(filter(lambda loc:loc.loc == location,copy))
+            if len(locs) > 0:
+                self.locations.append(min(locs,key=lambda loc:loc.time))
 
     def __getitem__(self, item):
         return self.intersections[tuple(item)]
@@ -64,14 +78,10 @@ class Intersections:
     def get_location(self,item):
         return list(filter(lambda loc:loc.loc == item,self.locations))[0]
 
-‘’’
-Add method to see what unique locations are in self.locations
-‘’’
 
     def count(self):
         for key in self.intersections.keys():
             self.intersections[key].count()
-
 
 if __name__ == '__main__':
     N,M,P,T = tuple(map(int,input('').split(' ')))
@@ -81,14 +91,22 @@ if __name__ == '__main__':
             for k in range(P):
                 intersections.add(Coor((i,j,k)),Intersection(*tuple(map(int,input('').split(' ')))))
     intersections.locations = [Location(Coor((0,0,0)),0)]
-    while Coor((N-1,M-1,P-1)) not in intersections:
+    while Coor((N-1,M-1,P-1)) not in map(lambda location:location.loc,intersections.locations):
         for location in (intersections.locations.copy(),intersections.locations.clear())[0]:
             for new_location in intersections.intersections[location.loc].next(location):
-                if new_location in intersections:
-‘’’
-Ise above described method instead
-‘’’
                     intersections.locations.append(new_location)
         intersections.minimize_locations()
         intersections.count()
     print(intersections.get_location((N-1,M-1,P-1)).time*T)
+
+'''
+2 2 2 5
+1 1 1
+100 2 1
+100 2 1
+100 1 1
+3 4 2
+400 4 4
+11 4 4
+5 5 5
+'''
