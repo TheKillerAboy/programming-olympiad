@@ -11,7 +11,6 @@ Contributions to alternative solutions are greatly appreciated
 - Final Round 2018 Day 1 Problem 1 Buttons Solution 1
 
 *List of IDEA's for solutions to Algorithms:*
-- Final Round 2011 Day 1 Problem 3 Language Chain IDEA 1
 - Final Round 2018 Day 1 Problem 2 Stones IDEA 1
 
 *List of Partial Solution for Algorithms:*
