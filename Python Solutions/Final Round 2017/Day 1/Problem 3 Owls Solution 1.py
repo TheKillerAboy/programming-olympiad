@@ -1,12 +1,14 @@
 from itertools import combinations
 
+MOD = 10**9+7
+
 def nCk(n,k):
     total = 1
     for i in range(n-k+1,n+1):
-        total *=  i
+        total *= i
     for i in range(2,k+1):
         total //=i
-    return total
+    return total%MOD
 
 class Coor:
     def __init__(self,loc):
