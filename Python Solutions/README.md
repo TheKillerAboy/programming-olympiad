@@ -15,4 +15,4 @@ Contributions to alternative solutions are greatly appreciated
 - Final Round 2018 Day 1 Problem 2 Stones IDEA 1
 
 *List of Partial Solution for Algorithms:*
-- Problem 2 Coin flips Partial Solution 1
+- Final Round 2018 Problem 2 Coin flips Partial Solution 1
