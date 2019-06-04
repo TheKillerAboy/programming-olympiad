@@ -38,14 +38,14 @@ def bot(current):
             A_group.add(current[i])
     A = len(A_group)
     B = 0
-    current_ = set(current)
+    find_ = set(find)
     for value in current:
         if value in A_group:
             A_group.remove(value)
-            current_.remove(value)
-        elif value in current_:
+            find_.remove(value)
+        elif value in find_:
             B+=1
-            current_.remove(value)
+            find_.remove(value)
     return A,B
 
 
