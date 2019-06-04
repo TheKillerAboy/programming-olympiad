@@ -32,19 +32,21 @@ def AB_combinations(arangement, A, B):
             yield from make_combination_groups(A_group, B_group, length)
 
 def bot(current):
-    A_group = set()
+    A_group = {}
     for i in range(N):
         if current[i] == find[i]:
-            A_group.add(current[i])
+            A_group[i] = (current[i])
     A = len(A_group)
     B = 0
-    find_ = set(find)
-    for value in current:
-        if value in A_group:
-            A_group.remove(value)
-            find_.remove(value)
+    find_ = list(find)
+    offset = 0
+    for i,value in enumerate(current):
+        if i in A_group and value == A_group[i]:
+            del find_[i-offset]
+            offset+=1
         elif value in find_:
             B+=1
+            offset+=find_.count(value)
             find_.remove(value)
     return A,B
 
