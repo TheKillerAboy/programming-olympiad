@@ -12,8 +12,6 @@ Contributions to alternative solutions are greatly appreciated
 
 *List of IDEA's for solutions to Algorithms:*
 - Final Round 2018 Day 1 Problem 2 Stones IDEA 1
-- Final Round 2017 Day 2 Problem 3 Mastermind IDEA 1
 
 *List of Partial Solution for Algorithms:*
 - Final Round 2018 Problem 2 Coin flips Partial Solution 1
-- Final Round 2017 Day 2 Problem 3 Mastermind Partial Solution 1
