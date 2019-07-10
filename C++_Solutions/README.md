@@ -6,6 +6,6 @@ They are written in C++17
 Contributions to alternative solutions are greatly appreciated
 
 *List of Algorithms that need to be optimized:*
-- Problem_2_Rövarspråket_Solution_1 has weird c++ glitch or something
+- School Round 1 Problem_2_Rövarspråket_Solution_1 has weird c++ glitch or something
 
 *List of IDEA's for solutions to Algorithms:*
