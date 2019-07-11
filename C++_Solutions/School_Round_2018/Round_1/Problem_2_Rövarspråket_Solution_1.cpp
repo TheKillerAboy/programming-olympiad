@@ -5,8 +5,8 @@ using namespace std;
 
 string klinkers = "aeiou";
 
-bool isConsonant(const char& let){
-  return klinkers.find(let) == string::npos;
+bool isConsonant(const char& clet){
+  return klinkers.find(clet) == string::npos;
 }
 
 int main(int argc, char const *argv[]) {
