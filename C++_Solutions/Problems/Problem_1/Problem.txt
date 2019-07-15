@@ -1,0 +1,1 @@
+Write a program that efficiently calculates how many factors a value has. 
