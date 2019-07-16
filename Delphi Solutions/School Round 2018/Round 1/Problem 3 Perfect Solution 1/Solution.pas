@@ -34,7 +34,7 @@ begin
   Perfection := GetPerfection(N);
   if N = Perfection then
      edtOut.Text := 'Perfect'
-  else if N < Perfection then
+  else if N > Perfection then
     edtOut.Text := 'Abundant'
   else
     edtOut.Text := 'Deficent';
@@ -46,7 +46,7 @@ var
 I:integer;
 begin
   result:=0;
-  for I := 1 to N do
+  for I := 1 to N - 1 do
   begin
     if N mod I = 0 then
     begin
