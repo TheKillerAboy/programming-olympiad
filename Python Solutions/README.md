@@ -15,3 +15,4 @@ Contributions to alternative solutions are greatly appreciated
 
 *List of Partial Solution for Algorithms:*
 - Final Round 2018 Problem 2 Coin flips Partial Solution 1
+- Final Round 2018 Problem 2 Coin flips Partial Solution 2
