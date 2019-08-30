@@ -1,5 +1,5 @@
 if __name__ == '__main__':
-    length = int(input(' '))
+    length = int(input(''))
     pattern = [int(_) for _ in input('').split(' ')]
     for size in range(2,length+1):
         patterns = set()
@@ -7,13 +7,14 @@ if __name__ == '__main__':
             pat = []
             current_pattern = pattern[start:start+size+1]
             if len(current_pattern)==size+1:
-                print(current_pattern)
                 for prev, next in zip(current_pattern[:-1],current_pattern[1:]):
                     pat.append(next-prev)
                 patterns.add(tuple(pat))
-        print(' ')
+        patterns = list(patterns)
         if len(patterns) == 1:
-            print(' '.join([str(_) for _ in list(patterns)[0]]))
+            if patterns[0][0]==patterns[0][1] and len(patterns[0]) == 2:
+                patterns[0] = [patterns[0][0]]
+            print(' '.join(map(str,patterns[0])))
             exit()
 
 '''

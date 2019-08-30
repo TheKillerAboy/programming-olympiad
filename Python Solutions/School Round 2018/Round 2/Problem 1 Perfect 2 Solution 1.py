@@ -6,7 +6,7 @@ def perfectScore(number):
     return out
 
 if __name__ == '__main__':
-    num1, num2 = tuple([int(_) for _ in input('Input: ').split(' ')])
+    num1, num2 = tuple([int(_) for _ in input('').split(' ')])
     out = [0,0,0]
     for num in range(num1, num2+1):
         if num < perfectScore(num):

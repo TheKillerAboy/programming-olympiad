@@ -9,6 +9,7 @@ Contributions to alternative solutions are greatly appreciated
 - School Round 2015 Problem 5 Prime Generating Integers Solution 1
 - Final Round 2012 Day 2 Problem 3 Subway equivalence Solution 1
 - Final Round 2018 Day 1 Problem 1 Buttons Solution 1
+- Problem 1 Sorting Rum Solution 1
 
 *List of IDEA's for solutions to Algorithms:*
 - Final Round 2018 Day 1 Problem 2 Stones IDEA 1

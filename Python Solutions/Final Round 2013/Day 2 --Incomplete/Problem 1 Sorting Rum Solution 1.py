@@ -5,11 +5,11 @@ def refactor_print(pairs):
         for size in range(len(pairs),0,-1):
             for comb in combinations(pairs,size):
                 if(valid_pairs(comb)):
-                    left = set(pairs)-set(comb)
+                    left = list(set(pairs)-set(comb))
                     if len(left) > 0:
-                        return [[comb],*refactor_print(left)]
+                        return [comb,*refactor_print(left)]
                     else:
-                        return [[comb]]
+                        return [comb]
     return [pairs]
 
 def valid_pairs(pairs):
@@ -21,14 +21,14 @@ def valid_pairs(pairs):
 def n_sum(n):
     return (n+1)*n//2
 
-def sort(fro,to):
+def sort(fro,to,out):
     if(fro < to):
         mid = (fro+to)>>1
         output = 0
-        output+=sort(fro,mid)
-        output+=sort(mid+1,to)
+        output+=sort(fro,mid,out)
+        output+=sort(mid+1,to,out)
         if(fro+1==to):
-            print(f'1 {fro} {to}')
+            out.append(f'1 {fro} {to}')
             return output+1
         else:
             pairs = []
@@ -38,10 +38,14 @@ def sort(fro,to):
             length = 0
             for pair_go in refactor_print(pairs):
                 length+=1
-                print(f'{len(pair_go)} {" ".join(map(lambda pair:" ".join(map(str,pair)),pairs))}')
+                out.append(f'{len(pair_go)} {" ".join(map(lambda pair:" ".join(map(str,pair)),pair_go))}')
             return output+length
     return 0
 
 if __name__ == '__main__':
     numBoxs = int(input(''))
-    print(sort(1,numBoxs))
+    out = []
+    sort(1,numBoxs,out)
+    out = list(filter(lambda x:x[0]!='0',out))
+    print(len(out))
+    print('\n'.join(out))

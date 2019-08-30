@@ -11,7 +11,7 @@ def cost(a,b):
     return abs(ax-bx) + abs(ay-by) + 1
 
 if __name__ == '__main__':
-    sentance = list(input('Input: '))
+    sentance = list(input(''))
     path = ['A',*sentance,'Accept']
     distance = 0
     for current, next in zip(path[:-1],path[1:]):

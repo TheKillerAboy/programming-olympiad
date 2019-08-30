@@ -45,7 +45,7 @@ if __name__ == '__main__':
     for combo in combonations:
         total = 0
         for subcombo in all_combonations(combo):
-            if subcombo in word:
+            if subcombo in combo:
                 total += 1
         occure.append(total)
 
