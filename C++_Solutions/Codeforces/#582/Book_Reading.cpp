@@ -26,15 +26,15 @@ vector<unsigned char> getPattern(int m){
   }
 }
 
-long long int query(int n, int m){
+unsigned long long int query(int n, int m){
     vector<unsigned char> pattern = getPattern(m);
     int size = pattern.size();
-    long long int sum = 0;
+    unsigned long long int sum = 0;
     for(int i = 0; i < size; i++){
       sum+=pattern[i];
     }
-    long long int out = (n/size)*sum;
-    for(int i = 0; i < n%size;i++){
+    unsigned long long int out = ((n/m)/size)*sum;
+    for(int i = 0; i < (n/m)%size;i++){
       out+=pattern[i];
     }
     return out;

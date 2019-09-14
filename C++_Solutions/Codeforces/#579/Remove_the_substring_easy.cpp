@@ -3,35 +3,21 @@
 
 using namespace std;
 
-int isSubString(string s, string t){
-  if(s.size()<t.size()){
-    return false;
-  }
-  for(int i = 0; i < s.size(); i++){
-    for(int j = i; j < i + t.size() + 1; j++){
-      if(j == i + t.size()){
-        return true;
+int main(){
+  string txt,pat;
+  cin>>txt>>pat;
+  for(int remove = txt.length() - pat.length(); remove >= 1; remove--){
+    for(int i = 0; i <= txt.length() - remove; i++){
+      string val = txt.substr(0,i) + txt.substr(i+remove);
+      if(remove == 5){
+        cerr<<val<<endl;
       }
-      if(t[j-i] != s[j]){
-        break;
-      }
-    }
-  }
-  return false;
-}
-
-int main(int argc, char const *argv[]) {
-  string s,t;
-  cin>>s>>t;
-  int currentSize = 0;
-  for(int size = s.size(); size > 0; size--){
-    for(int pos = 0; pos <= s.size() - size; pos++){
-      if(isSubString(s.substr(0,pos)+s.substr(pos+size),t)){
-        cout<<size<<endl;
+      if(val.find(pat) != val.npos){
+        cout<<remove<<endl;
         return 0;
       }
     }
   }
-  cout<<currentSize<<endl;
+  cout<<0<<endl;
   return 0;
 }
