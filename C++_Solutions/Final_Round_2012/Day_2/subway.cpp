@@ -1,78 +1,40 @@
 #include <string>
 #include <set>
 #include <iostream>
-#include <stack>
-#include <map>
 
 using namespace std;
 
-
-map<int,set<int>> constructTree(string path){
-  map<int,set<int>> out;
-  int counter = 0;
-  stack<int> prev;
-  prev.push(0);
-  for(int i = 0; i < path.length(); i++){
-    if(path[i] == '0'){
-      int newNode = ++counter;
-      out[prev.top()].insert(newNode);
-      out[newNode].insert(prev.top());
-      prev.push(newNode);
-    }
-    else{
-      prev.pop();
-    }
+void next_iter(string& arr){
+  size_t n = arr.length();
+  for(size_t i = 1; i < n-1; i++){
+    arr[i-1] = arr[i];
   }
-  return out;
+  arr[n-2] = arr[0];
+  arr[0] = '0';
+  arr[n-1] = '1';
 }
-
-void allPaths(set<string>& insertSet, int neededSize, map<int,set<int>>& Tree, int currentNode, set<int> currentPath,stack<int> currentStack, string currentString){
-  if(currentString.length() == neededSize){
-    insertSet.insert(currentString);
-  }
-  else{
-    for(auto child:Tree[currentNode]){
-      if(currentPath.find(child) == currentPath.end()){
-        auto childPath = currentPath;
-        childPath.insert(child);
-        auto childStack = currentStack;
-        childStack.push(currentNode);
-        auto childString = currentString + '0';
-        allPaths(insertSet,neededSize,Tree,child,childPath,childStack,childString);
-      }
-      else if(currentStack.top() == child){
-        auto childStack = currentStack;
-        childStack.pop();
-        auto childString = currentString + '1';
-        allPaths(insertSet,neededSize,Tree,child,currentPath,childStack,childString);
-      }
-    }
-  }
-}
-
 
 int main(){
-  set<string> paths;
-  int n;
-  cin>>n;
+  set<string> known;
+  int N;
+  cin>>N;
   string cur;
-  int uqi = 0;
-  for(int i = 0; i < n; i++){
+  int count = 0;
+  for(int i = 0; i < N; i++){
     cin>>cur;
-    if(paths.find(cur) == paths.end()){
-      auto tree = constructTree(cur);
-      for(auto node : tree){
-        stack<int> mystack;
-        mystack.push(node.first);
-        allPaths(paths,cur.length(),tree,node.first,{node.first},mystack,"");
+    if(known.find(cur) == known.end()){
+      count++;
+      string first = cur;
+      known.insert(cur);
+      next_iter(cur);
+      while(cur != first){
+        known.insert(cur);
+        next_iter(cur);
       }
-      cerr<<endl;
-      for(auto path: paths){
-        cerr<<path<<endl;
-      }
-      cerr<<endl;
-      uqi++;
     }
   }
-  cout<<uqi<<endl;
+
+  cout<<count<<endl;
+
+  return 0;
 }

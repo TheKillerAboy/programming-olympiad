@@ -1,0 +1,4 @@
+get the the biggest cycle by removing all nodes with 1 path(store somewhere) O(n*log(n));
+if size of cycle is smaller than min(a+b,b+c,c+a) then there arnt ant connections that work O(1);
+BFS through the cycle by starting at the largest odd number of connections and always traving to the largest connected node's connections that hasn't been visted and record the the cycle. O(n);
+choose first min(a,b,c) nodes, then min(a,b,c) excluding the first min(a,b,c) items and the rest is the max(a,b,c) O(n)
