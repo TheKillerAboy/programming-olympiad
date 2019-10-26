@@ -22,10 +22,46 @@ using namespace std;
 #define ll long long int
 #define ull unsigned long long int
 
+int N,K,D;
+vector<int> programs;
+
+int query(){
+	vector<int> totals(K+1,0);
+	int uniques = 0;
+	FOR(i,D){
+		if(totals[programs[i]] == 0){
+			++uniques;
+		}
+		++totals[programs[i]];
+	}
+	int MIN = uniques;
+	FORS(D,i,N){
+		--totals[programs[i-D]];
+		if(totals[programs[i-D]] == 0){
+			--uniques;
+		}
+		if(totals[programs[i]] == 0){
+			++uniques;
+		}
+		++totals[programs[i]];
+		MIN = min(MIN,uniques);
+	}
+	return MIN;
+}
+
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-
+	int Q;
+	cin>>Q;
+	FOR(i,Q){
+		cin>>N>>K>>D;
+		programs.resize(N);
+		FOR(j,N){
+			cin>>programs[j];
+		}
+		cout<<query()<<'\n';
+	}
 
 
 	return 0;
