@@ -1,43 +1,49 @@
-#include <iostream>
-#include <algorithm>
-#include <cmath>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int processQuery(int x,int n,int* damage,int* grow){
-  int maxDamage = *max_element(damage,damage+n);
-  int bestProfit = 0;
-  int bestProfitHit = 0;
-  for(int i = 0; i < n; i++){
-    if(bestProfit<damage[i] - grow[i]){
-      bestProfit = damage[i] - grow[i];
-      bestProfitHit= damage[i];
-    }
-  }
-  if(bestProfit <= 0){
-    return -1;
-  }
-  int moves = ceil((float)x/bestProfit);
-  if(x%bestProfit+bestProfit<=bestProfitHit){
-    return moves - 1;
-  }
-  else{
-    return moves - floor((float)(maxDamage-1)/bestProfitHit);
-  }
-}
+#define FOR(i_,a_) for(int i_=0;i_<a_;++i_)
+#define FORI(i_,a_) for(int i_=1;i_<=a_;++i_)
+#define FORA(e_,c_) for(auto e_:c_)
+#define ll long long int
+#define NINF LLONG_MIN;
 
-int main(int argc, char const *argv[]) {
-  int q;
-  cin>>q;
-  int n,x;
-  for(int i = 0; i < q; i++){
-    cin>>n>>x;
-    int damage[n];
-    int grow[n];
-    for(int j = 0; j < n ; j++){
-      cin>>damage[j]>>grow[j];
+ll Q,N,X,bestDamage,bestReduce;
+
+int main(){
+  // cin.tie(0);
+  // ios::sync_with_stdio((X-bestDamage)/bestReducefalse);
+  cin>>Q;
+  FOR(i,Q){
+    cin>>N>>X;
+    ll a,b;
+    bestReduce = 0;
+    bestDamage = NINF;
+    FOR(j,N){
+      cin>>a>>b;
+      bestDamage = max(bestDamage,a);
+      bestReduce = max(bestReduce,a-b);
     }
-    cout<<processQuery(x,n,damage,grow)<<endl;
+    if(bestReduce <= 0){
+      if(X > bestDamage){
+        cout<<-1<<'\n';
+        continue;
+      }
+      else{
+        cout<<1<<'\n';
+        continue;
+      }
+    }
+    if(bestDamage >= X){
+      cout<<1<<'\n';
+      continue;
+    }
+    ll out = max((X-bestDamage)/bestReduce + ((X-bestDamage)%bestReduce?1:0),(ll)0);
+    X-=out*bestReduce;
+    if(X>0){
+      ++out;
+    }
+    cout<<out<<'\n';
   }
   return 0;
 }

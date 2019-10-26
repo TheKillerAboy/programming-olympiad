@@ -1,49 +1,42 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-void leftIntrest(int* arr){
-  for(int i = 0; i < 10; i++){
-    if(arr[i] == 0){
-      arr[i] = 1;
-      return;
-    }
-  }
-}
+#define FOR(i_,a_) for(int i_=0;i_<a_;++i_)
+#define FORS(s_,i_,a_) for(int i_=s_;i_<a_;++i_)
+#define FORR(i_,a_) for(int i_=a_-1;i_>=0;--i_)
+#define FORI(i_,a_) for(int i_=1;i_<=a_;++i_)
+#define FORA(i_,a_) for(auto i_:a_)
+#define FOR1(i_,a_) for(int i_=1;i_<a_;++i_)
+#define ll long long int
+#define ull unsigned long long int
 
-void rightIntrest(int* arr){
-  for(int i = 10; i > 0; --i){
-    if(arr[i] == 0){
-      arr[i] = 1;
-      return;
-    }
-  }
-}
-
-void leftHotel(int* arr, int loc){
-  arr[loc] = 0;
-}
-
-int main(int argc, char const *argv[]) {
-  int rooms[10] = {0};
-  int q;
-  cin>>q;
+int main(){
+  cin.tie(0);
+  ios::sync_with_stdio(false);
+  int A;
   string events;
-  int loc;
-  cin>>events;
-  for(int i = 0; i < q; i++){
-    if(events[i] == 'L'){
-      leftIntrest(rooms);
+  cin>>A>>events;
+  vector<bool> rooms(10,false);
+  FORA(e,events){
+    if(e == 'L'){
+      FOR(i,10){
+        if(!rooms[i]){rooms[i]=true;break;}
+      }
     }
-    else if(events[i] == 'R'){
-      rightIntrest(rooms);
+    else if(e == 'R'){
+      FORR(i,10){
+        if(!rooms[i]){rooms[i]=true;break;}
+      }
     }
     else{
-      leftHotel(rooms,events[i] - '0');
+      rooms[e-'0'] = false;
     }
   }
-  for(int i = 0; i < 10; i++){
-    cout<<rooms[i];
+  FORA(e,rooms){
+    cout<<e;
   }
+
+
   return 0;
 }

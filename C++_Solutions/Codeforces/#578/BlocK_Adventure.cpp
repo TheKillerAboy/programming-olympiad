@@ -1,36 +1,46 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-bool isPossible(int* columns, int n, int m, int k){
-  for(int i = 0; i < n - 1; i++){
-    if(columns[i]+k<columns[i+1]){
-      if(m >= columns[i+1] - (columns[i]+k)){
-        m-=columns[i+1] - (columns[i]+k);
-      }
-      else{
-        return false;
-      }
-    }
-    else{
-      m+=columns[i]+ k - columns[i+1];
-    }
-  }
-  return true;
-}
+#define FOR(i_,a_) for(int i_=0;i_<a_;++i_)
+#define FORS(s_,i_,a_) for(int i_=s_;i_<a_;++i_)
+#define FORR(i_,a_) for(int i_=a_-1;i_>=0;--i_)
+#define FORI(i_,a_) for(int i_=1;i_<=a_;++i_)
+#define FORA(i_,a_) for(auto i_:a_)
+#define FOR1(i_,a_) for(int i_=1;i_<a_;++i_)
+#define ll long long int
+#define ull unsigned long long int
+
+int N,M,K;
+vector<int> columns;
 
 int main(){
-  int p;
-  cin>>p;
-  int n,m,k;
-  for(int i = 0; i < p; i++){
-    cin>>n>>m>>k;
-    int columns[n];
-    for(int j = 0; j < n; j++){
+  cin.tie(0);
+  ios::sync_with_stdio(false);
+  int Q;
+  cin>>Q;
+  FOR(i,Q){
+    cin>>N>>M>>K;
+    columns.resize(N);
+    FOR(j,N){
       cin>>columns[j];
     }
-    cout<<(isPossible(columns,n,m,k) ? "YES" : "NO")<<endl;
+    bool isPos = true;
+    FOR(i,N-1){
+      if(columns[i]<columns[i+1]-K){
+        M-=columns[i+1]-columns[i]-K;
+        if(M<0){
+          isPos = false;
+          break;
+        }
+      }
+      else{
+        M+=min(columns[i],columns[i]-columns[i+1]+K);
+      }
+    }
+    cout<<(isPos?"YES":"NO")<<'\n';
   }
+
 
   return 0;
 }
