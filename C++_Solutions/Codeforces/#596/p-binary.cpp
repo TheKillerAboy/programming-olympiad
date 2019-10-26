@@ -22,10 +22,26 @@ using namespace std;
 #define ll long long int
 #define ull unsigned long long int
 
+inline ll pow2(int a){
+	return 1<<a;
+}
+
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-
+	ll N,P;
+	cin>>N>>P;
+	if(P == 0){
+		cout<<__builtin_popcountll(N)<<'\n';
+		return 0; 
+	}
+	FOR1(i,N-i*P+1){
+		if(N-i*P > 0 && __builtin_popcountll(N-i*P)<=i){
+			cout<<i<<'\n';
+			return 0;
+		}
+	}
+	cout<<-1<<'\n';
 
 
 	return 0;
