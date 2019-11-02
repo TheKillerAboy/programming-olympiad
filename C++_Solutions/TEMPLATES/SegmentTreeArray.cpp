@@ -25,8 +25,8 @@ struct SegTree{
 			ST[ni] = arr[nl];
 		}
 	}
-	SegTree(vector<T> arr, CMP cmp_, T default_ = 0){
-		ST.resize((1<<(ceil(log2(arr.size()))+1))-1);
+	SegTree(vector<T>& arr, CMP cmp_, T default_ = 0){
+		ST.resize((1<<((int)ceil(log2(arr.size()))+1))-1);
 		cmp = cmp_;
 		size__ = arr.size();
 		DEFAULT = default_;
@@ -47,7 +47,8 @@ struct SegTree{
 	T query(int l, int r){
 		return query__(l,r,0,size()-1,0);
 	}
-	void updateRange__(int ql, int qr, int nl, int nr, int ni, T value){
+	template <typename K>
+	void updateRange__(int ql, int qr, int nl, int nr, int ni, K value){
 		if(!(nr<ql || nl>qr)){
 			if(nl==nr){
 				ST[ni] = value;
@@ -60,8 +61,12 @@ struct SegTree{
 			}
 		}
 	}
-	void updateRange(int l, int r, T value){
+	template <typename K>
+	void updateRangeFunc(int l, int r, K value){
 		updateRange__(l,r,0,size()-1,0,value);
+	}
+	void updateRange(int l, int r, T value){
+		updateRange__(l,r,0,size()-1,0,[&](T& A){return value;});
 	}
 	void updateSingle(int i, T value){
 		updateRange(i,i,value);
@@ -70,9 +75,11 @@ struct SegTree{
 
 //TEMPLATE END
 
+inline ll max__(ll a, ll b){return max(a,b);}
+
 //test
 int main(){
 	vector<ll> arr = {3,2,1,4,5,2,3};
-	auto __max = [](ll& a, ll& b)->ll{return (a>b?a:b);};
-	SegTree<ll,decltype(__max&)> ST(arr,__max,0);
+	auto ST = SegTree<ll,decltype(&max__)>(arr,max__);
+	cout<<ST.query(0,4);
 }

@@ -1,81 +1,76 @@
-#include <set>
-#include <iostream>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-bool getPosition(bool* island, int m, pair<int,int> current){
-  return island[(current.first-1)*m + current.second-1];
-}
+#define FOR(i_,a_) for(int i_=0;i_<a_;++i_)
+#define FORS(s_,i_,a_) for(int i_=s_;i_<a_;++i_)
+#define FORR(i_,a_) for(int i_=a_-1;i_>=0;--i_)
+#define FORI(i_,a_) for(int i_=1;i_<=a_;++i_)
+#define FORA(i_,a_) for(auto i_:a_)
+#define FOR1(i_,a_) for(int i_=1;i_<a_;++i_)
 
-bool inBound(int n, int m, pair<int,int> current){
-  return 0<current.first && current.first<=n && 0<current.second && current.second<=m;
-}
+#define _ cerr<<' ';
+#define _T cerr<<'\t';
+#define _N cerr<<'\n';
+#define TRACEV(v_) cerr<<v_;
+#define TRACEP(p_) cerr<<"("<<p_.first<<", "<<p_.second<<") ";
+#define TRACECE(c_,tt_) for(auto e_:c_){tt_(e_);_;}_N;
+#define TRACEC(c_) TRACECE(c_,TRACEV)
+#define TRACEE(v_,tt_) tt_(v_);_N;
+#define TRACE(v_) TRACEE(v_,TRACEV);
+#define TRACEEP(v_) TRACEE(v_,TRACEP);
 
-vector<pair<int,int>> nextLoc(pair<int,int> current){
-  vector<pair<int,int>> out;
-  for(int i = -1; i < 2; i++){
-    for(int j = -1; j < 2; j++){
-      if(i!=j && -i!=j){
-        out.push_back(pair{current.first+i,current.second + j});
-      }
-    }
-  }
-  return out;
-}
+#define ll long long int
+#define ull unsigned long long int
+#define INF INT_MAX/1000
 
-void printCoor(pair<int,int> cur){
-    cerr<<cur.first<<' '<<cur.second<<endl;
-}
+vector<vector<vector<int>>> DP;
+vector<vector<bool>> isForest;
+int W,H;
 
-bool hasPath(pair<int,int> start, int n, int m, bool* island){
-  set<pair<int,int>> all = {start};
-  set<pair<int,int>> current = {start};
-  set<pair<int,int>> current_copy;
-
-  pair<int,int> end = {n,m};
-
-  while(!current.empty() && *current.rbegin() != end){
-    current_copy.clear();
-    copy(current.begin(),current.end(),inserter(current_copy,current_copy.begin()));
-    current.clear();
-    for(auto loc : current_copy){
-      for(auto next_loc: nextLoc(loc)){
-        if(all.find(next_loc) == all.end() && current.find(next_loc) == current.end()){
-          if(inBound(n,m,next_loc) && getPosition(island,m,next_loc)){
-            current.insert(next_loc);
-            all.insert(next_loc);
-          }
-        }
-      }
-    }
-  }
-  return !current.empty();
+int dp(int x, int y, bool forward){
+  if(x >= W || x < 0 || y>=H || y < 0) return INF;
+  else if(isForest[x][y]){DP[x][y][forward]=INF; return DP[x][y][forward];}
+  else if(DP[x][y][forward] != -1) return DP[x][y][forward];
+  DP[x][y][forward] = min(dp(x+(forward?1:-1),y,forward),dp(x,y+(forward?1:-1),forward))+1;
+  return DP[x][y][forward];
 }
 
 int main(){
-  int n,m;
-  cin>>n>>m;
-  bool island[n*m];
+  cin.tie(0);
+  ios::sync_with_stdio(false);
+  cin>>H>>W;
+  isForest.resize(W,vector<bool>(H));
   string line;
-  for(int i = 0; i < n; i++){
+  FOR(y,H){
     cin>>line;
-    for(int j = 0; j < m; j++){
-      island[i*m + j] = line[j] == '.';
+    FOR(x,W){
+      isForest[x][y] = line[x] == '#';
     }
   }
-  int out = 0;
-  if(inBound(n,m,{1,2}) && getPosition(island,m,{1,2})){
-    if(hasPath({1,2},n,m,island)){
-      out += 1;
+  DP.resize(W,vector<vector<int>>(H,vector<int>(2,-1)));
+  DP[W-1][H-1][1] = 1;
+  DP[0][0][0] = 1;
+  dp(0,0,1);
+  dp(W-1,H-1,0);
+  if(DP[W-1][H-1][0] == -1 || DP[W-1][H-1][0] >= INF){
+    cout<<0<<'\n';
+    return 0;
+  }
+  map<int,int> count;
+  FOR(y,H){
+    FOR(x,W){
+        if(!((x==0&&y==0)||(x==W-1&&y==H-1))){
+          if(DP[x][y][0] != -1 && DP[x][y][0] < INF){
+            ++count[DP[x][y][0]];
+          }
+        }
     }
   }
-  if(inBound(n,m,{2,1}) && getPosition(island,m,{2,1})){
-    if(hasPath({2,1},n,m,island)){
-      out += 1;
-    }
+  FORA(ele,count){
+    if(ele.second == 1) {cout<<1<<'\n';return 0;}
   }
-  int out2 = (inBound(n,m,{n-1,m}) ? getPosition(island,m,{n-1,m}) : 0) + (inBound(n,m,{n,m-1}) ? getPosition(island,m,{n,m-1}) : 0);
-  cout<<min(out,out2)<<endl;
+  cout<<2<<'\n';
+
+  return 0;
 }

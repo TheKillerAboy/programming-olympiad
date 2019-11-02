@@ -1,4 +1,11 @@
+/*
+ID: annekin1
+TASK: combo
+LANG: C++                 
+*/
 #include <bits/stdc++.h>
+
+
 
 using namespace std;
 
@@ -22,18 +29,47 @@ using namespace std;
 #define ll long long int
 #define ull unsigned long long int
 
+int N;
+
+inline int UNION(int a, int b){
+	set<int> setA;
+	for(int i = a-2; i <= a+2; ++i){
+		setA.insert((i+N)%N);
+	}
+	set<int> setB;
+	for(int i = b-2; i <= b+2; ++i){
+		setB.insert((i+N)%N);
+	}
+	int count = 0;
+	FORA(ele,setA){
+		if(setB.find(ele) != setB.end()){
+			++count;
+		}
+	}
+	return count;
+}
+
+inline int power3(int a){
+	return a*a*a;
+}
 
 int main(){
-  cin.tie(0);
-  ios::sync_with_stdio(false);
-  ll R,D,E;
-  cin>>R>>D>>E;
-  ll out = R;
-  FOR(i,R/D+1){
-    out = min(out,R - D*i - 5*E * ((R-D*i)/(5*E)));
-  }
-  cout<<out<<'\n';
+	ifstream fin("combo.in");
+	ofstream fout("combo.out");
+	fin>>N;
+	vector<int> J(3),M(3);
+	FOR(i,3){
+		fin>>J[i];
+	}
+	FOR(i,3){
+		fin>>M[i];
+	}
+	int mul = 1;
+	FOR(i,3){
+		mul *= UNION(J[i],M[i]);
+	}
+	fout<<2*power3(min(5,N))-mul<<'\n';
 
 
-  return 0;
+	return 0;
 }

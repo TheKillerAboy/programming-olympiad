@@ -1,3 +1,8 @@
+/*
+ID: annekin1
+TASK: combo
+LANG: C++                 
+*/
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -22,18 +27,11 @@ using namespace std;
 #define ll long long int
 #define ull unsigned long long int
 
-
 int main(){
-  cin.tie(0);
-  ios::sync_with_stdio(false);
-  ll R,D,E;
-  cin>>R>>D>>E;
-  ll out = R;
-  FOR(i,R/D+1){
-    out = min(out,R - D*i - 5*E * ((R-D*i)/(5*E)));
-  }
-  cout<<out<<'\n';
+	ifstream fin("combo.in");
+	ofstream fout("combo.out");
 
 
-  return 0;
+
+	return 0;
 }

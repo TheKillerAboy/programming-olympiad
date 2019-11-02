@@ -15,7 +15,7 @@ struct BIT{
 			i+=(i&(-i));
 		}
 	}
-	BIT(vector<T> arr){
+	BIT(vector<T>& arr){
 		BITree = vector<T>(arr.size()+1,0);
 		for(int i = 0; i < arr.size(); ++i){
 			update(i,arr[i]);

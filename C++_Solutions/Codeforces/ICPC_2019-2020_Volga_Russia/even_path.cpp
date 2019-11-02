@@ -24,10 +24,43 @@ using namespace std;
 #define ll long long int
 #define ull unsigned long long int
 
+
+//TEMPLATE START
+
+template<typename T>
+struct PrevSum{
+	vector<T> pref;
+	PrevSum(vector<T>& arr){
+		pref.resize(arr.size());
+		pref[0] = arr[0];
+		for(size_t i = 1; i < arr.size(); ++i) pref[i] = pref[i-1] + arr[i];
+	}
+	inline T query(int l, int r){
+		return l>r?(r==0?pref[l]:pref[l]-pref[r-1]):(l==0?pref[r]:pref[r]-pref[l-1]);
+	}
+};
+
+//TEMPLATE END
+
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-
+	int N,Q;
+	cin>>N>>Q;
+	vector<int> R(N),C(N);
+	int a;
+	FOR(i,N) {cin>>a;R[i]=a%2;}
+	FOR(i,N) {cin>>a;C[i]=a%2;}
+	PrevSum<int> RST(R);
+	PrevSum<int> CST(C);
+	int ra,ca,rb,cb;
+	FOR(i,Q){
+		cin>>ra>>ca>>rb>>cb;
+		tie(ra,rb) = minmax({ra-1,rb-1});
+		tie(ca,cb) = minmax({ca-1,cb-1});
+		if(RST.query(ra,rb)%(rb-ra+1) == 0 && CST.query(ca,cb)%(cb-ca+1) == 0 && R[rb] == C[cb]) cout<<"YES"<<'\n';
+		else cout<<"NO"<<'\n';
+	}
 
 
 	return 0;
