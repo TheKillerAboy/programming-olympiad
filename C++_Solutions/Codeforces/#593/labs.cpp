@@ -8,9 +8,11 @@ using namespace std;
 #define FORI(i_,a_) for(int i_=1;i_<=a_;++i_)
 #define FORA(i_,a_) for(auto i_:a_)
 #define FOR1(i_,a_) for(int i_=1;i_<a_;++i_)
+#define FORIT(it_,c_) for(auto it_ = c_.begin(); it_!=c_.end();++it_)
 
 #define _ cerr<<' ';
 #define _N cerr<<'\n';
+#define _T cerr<<'\t';
 #define TRACEV(v_) cerr<<v_;
 #define TRACEP(p_) cerr<<"("<<p_.first<<", "<<p_.second<<") ";
 #define TRACECE(c_,tt_) for(auto e_:c_){tt_(e_);_;}_N;
@@ -25,44 +27,24 @@ using namespace std;
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-	int Q,N;
-	int R,P,S,cR,cP,cS,uR,uP,uS;
-	string seq;
-	cin>>Q;
-	FOR(i,Q){
-		cin>>N;
-		cin>>R>>P>>S;
-		cin>>seq;
-		cR = 0;cP = 0; cS = 0;
-		FOR(i,N){
-			if(seq[i]=='R') ++cR;
-			else if(seq[i]=='P') ++cP;
-			else ++cS;
+	int N;
+	cin>>N;
+	vector<vector<int>> groups(N,vector<int>(N));
+	int i = 0,j = 0;
+	int value = N*N;
+	while(value > 0){
+		if(i<0){i=0;++j;}
+		else if(i>=N){i=N-1;++j;}
+		groups[i][j] = value;
+		--value;
+		if(j%2==0) ++i;
+		else --i;
+	}
+	FOR(i,N){
+		FOR(j,N){
+			cout<<groups[i][j]<<' ';
 		}
-		uR = min(R,cS);
-		uP = min(P,cR);
-		uS = min(S,cP);
-		if(uR+uP+uS >= N/2+N%2){
-			cout<<"YES\n";
-			vector<char> events(N,0);
-			FOR(i,N){
-				if(seq[i] == 'R' && P>0){--P;events[i]='P';}
-				else if(seq[i] == 'S' && R>0){--R;events[i]='R';}
-				else if(seq[i] == 'P' && S>0){--S;events[i]='S';}
-			}
-			FOR(i,N){
-				if(events[i] == 0){
-					if(P>0){--P;events[i]='P';}
-					else if(R>0){--R;events[i]='R';}
-					else{--S;events[i]='S';}
-				}
-			}
-			FOR(i,N){
-				cout<<events[i];
-			}
-			cout<<'\n';
-		}
-		else cout<<"NO\n";
+		cout<<'\n';
 	}
 
 

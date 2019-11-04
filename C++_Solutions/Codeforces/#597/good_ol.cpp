@@ -22,6 +22,10 @@ using namespace std;
 #define ll long long int
 #define ull unsigned long long int
 
+inline int gcd(int a, int b){
+	return b>a?gcd(b,a):(b==0?a:gcd(b,a%b));
+}
+
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
@@ -29,9 +33,8 @@ int main(){
 	cin>>Q;
 	FOR(i,Q){
 		cin>>a>>b;
-		if(a>b) a^=b^=a^=b;
-		if(a*2 <= b) cout<<"Finite"<<'\n';
-		else cout<<"Infinite"<<'\n';
+		if(gcd(a,b) == 1) cout<<"Finite\n";
+		else cout<<"Infinite\n";
 	}
 
 
