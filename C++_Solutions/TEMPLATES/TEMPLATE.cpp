@@ -21,7 +21,7 @@ using namespace std;
 #define TRACE(v_) TRACEE(v_,TRACEV);
 #define TRACEEP(v_) TRACEE(v_,TRACEP);
 template<typename T>void TRACEU(T t) {TRACE(t)}
-template<typename T,typename... Args>void TRACEU(T t, Args... args){TRACEV(t) _ TRACEU(args...);}
+template<typename T,typename... Args>void TRACEU(T t, Args... args){TRACEV(t) TRACE(" ,") TRACEU(args...);}
 template<typename T,typename... Args>void TRACEUT_(T t){TRACEV(t)}
 template<typename T,typename... Args>void TRACEUT_(T t, Args... args){TRACEV(t) TRACEV(", ") TRACEUT_(args...);}
 template<typename T,typename... Args>void TRACEUT(T t, Args... args){TRACEV('(') TRACEUT_(t,args...); TRACE(")");}
