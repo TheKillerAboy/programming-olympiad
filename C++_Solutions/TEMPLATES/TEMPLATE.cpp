@@ -20,6 +20,13 @@ using namespace std;
 #define TRACEE(v_,tt_) tt_(v_);_N;
 #define TRACE(v_) TRACEE(v_,TRACEV);
 #define TRACEEP(v_) TRACEE(v_,TRACEP);
+template<typename T>void TRACEU(T t) {TRACE(t)}
+template<typename T,typename... Args>void TRACEU(T t, Args... args){TRACEV(t) _ TRACEU(args...);}
+template<typename T,typename... Args>void TRACEUT_(T t){TRACEV(t)}
+template<typename T,typename... Args>void TRACEUT_(T t, Args... args){TRACEV(t) TRACEV(", ") TRACEUT_(args...);}
+template<typename T,typename... Args>void TRACEUT(T t, Args... args){TRACEV('(') TRACEUT_(t,args...); TRACE(")");}
+template<typename Tuple, size_t... Is>void RACET_(Tuple t, index_sequence<Is...>){TRACEUT(get<Is>(t)...);}
+template<size_t N, typename Tuple>void TRACET(Tuple t){TRACET_(t,make_index_sequence<N>{});}
 
 #define ll long long int
 #define ull unsigned long long int

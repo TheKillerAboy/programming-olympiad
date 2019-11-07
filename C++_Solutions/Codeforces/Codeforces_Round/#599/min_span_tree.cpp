@@ -20,31 +20,82 @@ using namespace std;
 #define TRACEE(v_,tt_) tt_(v_);_N;
 #define TRACE(v_) TRACEE(v_,TRACEV);
 #define TRACEEP(v_) TRACEE(v_,TRACEP);
+template<typename T>void TRACEU(T t) {TRACE(t)}
+template<typename T,typename... Args>void TRACEU(T t, Args... args){TRACEV(t) _ TRACEU(args...);}
+template<typename T,typename... Args>void TRACEUT_(T t){TRACEV(t)}
+template<typename T,typename... Args>void TRACEUT_(T t, Args... args){TRACEV(t) TRACEV(", ") TRACEUT_(args...);}
+template<typename T,typename... Args>void TRACEUT(T t, Args... args){TRACEV('(') TRACEUT_(t,args...); TRACE(")");}
+template<typename Tuple, size_t... Is> void TRACET_(Tuple t, index_sequence<Is...>){TRACEUT(get<Is>(t)...);}
+template<size_t N, typename Tuple>void TRACET(Tuple t){TRACET_(t,make_index_sequence<N>{});}
 
 #define ll long long int
 #define ull unsigned long long int
 #define pii pair<int,int>
+#define INF INT_MAX
+
+#define minmaxP(a,b) pii{min(a,b),max(a,b)}
+
+vector<int> groups;
+vector<int> groupSizes;
+set<int> heads;
+
+int uFind(int a){
+	int current = a;
+	while(groups[current] != -1){
+		current = groups[current];
+	}
+	if(current != a){
+		groups[a] = current;
+	}
+	return current;
+}
+
+void uMerge(int a, int b){
+	int aP = uFind(a), bP = uFind(b);
+	if(aP != bP){
+		if(groupSizes[bP] > groupSizes[aP]) aP^=bP^=aP^=bP;
+		heads.erase(heads.find(bP));
+		groups[bP] = aP;
+		groupSizes[aP] += groupSizes[bP];
+	}
+}
 
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
 	int N,M;
 	cin>>N>>M;
-	vector<int> weights(N,N-1);
+	groups.resize(N,-1);
+	groupSizes.resize(N,1);
+	map<int,set<int>> weights;
 	int a,b;
+	FOR(i,N) heads.insert(i);
+	FOR(i,N) weights[i].insert(INF);
 	FOR(i,M){
 		cin>>a>>b;
 		--a;--b;
-		--weights[a];
-		--weights[b];
+		weights[a].insert(b);
+		weights[b].insert(a);
 	}
-	int out = 0;
-	FOR(i,N){
-		out = max(out,weights[i]);
+	FORA(ele,weights){
+		int current = 0;
+		bool breakK = false;
+		FORA(val,ele.second){
+			while(current < val && current < N){
+				if(uFind(current) != uFind(ele.first)){
+					uMerge(current,ele.first);
+					breakK = true;
+					break;
+				}
+				++current;
+			}
+			if(breakK) break;
+			++current;
+			if(current >= N) break;
+		}
+
 	}
-	cout<<out<<'\n';
-
-
+	cout<<heads.size()-1<<'\n';
 
 	return 0;
 }

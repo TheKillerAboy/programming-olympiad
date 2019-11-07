@@ -37,6 +37,7 @@ int main(){
 		connections[d].insert(e);
 		connections[e].insert(d);
 	}
+	vector<bool> visited;
 
 	return 0;
 }
