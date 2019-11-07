@@ -23,6 +23,7 @@ using namespace std;
 
 #define ll long long int
 #define ull unsigned long long int
+#define pii pair<int,int>
 
 int main(){
 	cin.tie(0);
