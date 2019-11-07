@@ -33,6 +33,10 @@ int main(){
 	cin>>n;
 	vector<ll> factors;
 	int size = 0;
+	if(n == 1){
+		cout<<1<<'\n';
+		return 0;
+	}
 	factors.reserve(100000);
 	if(n%2==0){
 		factors.push_back(2);
@@ -54,7 +58,12 @@ int main(){
 		++size;
 		factors.push_back(n);
 	}
-	cout<<factors[size-1]<<'\n';
+	if(size > 1){
+		cout<<1<<'\n';
+	}
+	else{
+		cout<<factors[0]<<'\n';
+	}
 
 	return 0;
 }

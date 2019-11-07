@@ -1,8 +1,10 @@
 from sys import argv
 import os;
 
-mypath = os.path.dirname(os.path.realpath(__file__))
-source_file = argv[1];
+mypath = argv[1]
+source_file = argv[2]
+preset_type = argv[3]
+asource = preset_type == "prefix"
 
 from os import listdir, popen
 from os.path import isfile, join
@@ -14,9 +16,11 @@ correct = 0
 
 for file in onlyfiles:
 	if file.find('.in') != -1:
+		if asource and file.find(source_file) == -1:
+			continue
 		out_file = file.replace('.in','.out.test');
 		real_out_file = file.replace('.in','.out');
-		f = popen(f'./{source_file} < {file} > {out_file}; cmp {out_file} {real_out_file}')
+		f = popen(f'{mypath}/{source_file} < {mypath}/{file} > {mypath}/{out_file}; diff -E -Z -b {mypath}/{out_file} {mypath}/{real_out_file}')
 		total += 1
 		if f.read() == '':
 			print(file.replace('.in','')," Correct!")
