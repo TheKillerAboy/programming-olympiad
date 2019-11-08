@@ -78,7 +78,7 @@ int main(){
 		weights[b].insert(a);
 	}
 	FORA(ele,weights){
-		int current = 0;
+		int current = ele.first-1;
 		bool breakK = false;
 		FORA(val,ele.second){
 			while(current < val && current < N){
