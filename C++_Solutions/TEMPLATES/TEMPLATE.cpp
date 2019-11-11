@@ -13,20 +13,24 @@ using namespace std;
 #define _ cerr<<' ';
 #define _N cerr<<'\n';
 #define _T cerr<<'\t';
-#define TRACEV(v_) cerr<<v_;
-#define TRACEP(p_) cerr<<"("<<p_.first<<", "<<p_.second<<") ";
-#define TRACECE(c_,tt_) for(auto e_:c_){tt_(e_);_;}_N;
-#define TRACEC(c_) TRACECE(c_,TRACEV)
-#define TRACEE(v_,tt_) tt_(v_);_N;
-#define TRACE(v_) TRACEE(v_,TRACEV);
-#define TRACEEP(v_) TRACEE(v_,TRACEP);
-template<typename T>void TRACEU(T t) {TRACE(t)}
-template<typename T,typename... Args>void TRACEU(T t, Args... args){TRACEV(t) TRACE(" ,") TRACEU(args...);}
-template<typename T,typename... Args>void TRACEUT_(T t){TRACEV(t)}
-template<typename T,typename... Args>void TRACEUT_(T t, Args... args){TRACEV(t) TRACEV(", ") TRACEUT_(args...);}
-template<typename T,typename... Args>void TRACEUT(T t, Args... args){TRACEV('(') TRACEUT_(t,args...); TRACE(")");}
-template<typename Tuple, size_t... Is>void RACET_(Tuple t, index_sequence<Is...>){TRACEUT(get<Is>(t)...);}
-template<size_t N, typename Tuple>void TRACET(Tuple t){TRACET_(t,make_index_sequence<N>{});}
+#define TRACED(_v) cerr<<_v;
+void TRACEV(string a){TRACED(a);}
+template<typename... Args> void TRACEV(tuple<Args...> t);
+template<typename l, typename r> void TRACEV(pair<l,r> t);
+template<typename T> void TRACEV(T t){TRACED(t);}
+template<template<typename...> class T, typename... K> void TRACEV(T<K...> t);
+template<typename T,typename... Args>void TRACEUT_(T t){TRACEV(t);}
+template<typename T,typename... Args>void TRACEUT_(T t, Args... args){TRACEV(t); TRACED(", "); TRACEUT_(args...);}
+template<typename T,typename... Args>void TRACEUT(T t, Args... args){TRACED('('); TRACEUT_(t,args...); TRACED(")");}
+template<typename Tuple, size_t... Is>void TRACET_(Tuple t, index_sequence<Is...>){TRACEUT(get<Is>(t)...);}
+template<typename Tuple>void TRACET(Tuple t){TRACET_(t,make_index_sequence<tuple_size<Tuple>::value>{});}
+#define TRACEP(p_) TRACED("("); TRACEV(p_.first);TRACED(", ");TRACEV(p_.second);TRACED(")");
+template<typename... Args> void TRACEV(tuple<Args...> t){TRACET(t);}
+template<typename l, typename r> void TRACEV(pair<l,r> t){TRACEP(t);}
+template<template<typename...> class T, typename... K> void TRACEV(T<K...> t){auto it = t.begin();
+TRACED("[");TRACEV(*it);for(++it;it!=t.end();++it){TRACED(", ");TRACEV(*it);}TRACED("]");}
+template<typename T> void TRACE(T t){TRACEV(t);_N;}
+template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TRACE(args...);}
 
 #define ll long long int
 #define ull unsigned long long int
@@ -35,8 +39,6 @@ template<size_t N, typename Tuple>void TRACET(Tuple t){TRACET_(t,make_index_sequ
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-
-
 
 	return 0;
 }
