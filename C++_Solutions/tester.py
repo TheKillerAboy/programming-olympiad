@@ -103,7 +103,7 @@ def tester(directory,source_file,*args,**kwargs):
 	if source_file not in files_in_direcory:
 		print("Source file doesn't exist")
 		return
-	files_in_direcory = list(filter(lambda file : fileMeetConstraints(file,files_in_direcory,source_file,**kwargs),[f for f in listdir(directory) if isfile(join(directory, f))]))
+	files_in_direcory = set(filter(lambda file : fileMeetConstraints(file,files_in_direcory,source_file,**kwargs),files_in_direcory))
 	num_of_tests = len(files_in_direcory)
 	for file in files_in_direcory:
 		output_file = file.replace(KWARGS.inputExt,KWARGS.outputExt)
