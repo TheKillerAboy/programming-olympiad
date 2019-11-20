@@ -15,7 +15,6 @@ using namespace std;
 #define _T cerr<<'\t';
 #define TRACED(_v) cerr<<_v;
 void TRACEV(string a){TRACED(a);}
-void TRACEV(char a){TRACED(a);}
 template<typename... Args> void TRACEV(tuple<Args...> t);
 template<typename l, typename r> void TRACEV(pair<l,r> t);
 template<typename T> void TRACEV(T t){TRACED(t);}
@@ -41,6 +40,31 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-
+	int Q;
+	cin>>Q;
+	int N;
+	vector<int> a,b;
+	FOR(i_,Q){
+		cin>>N;
+		a.resize(N);
+		b.resize(N);
+		FOR(i,N) cin>>a[i];
+		FOR(i,N) cin>>b[i];
+		int count = a[0] != b[0];
+		FOR1(i,N){
+			if(a[i] != b[i] && a[i-1] == b[i-1]){
+				++count;
+			}
+		}
+		if(count > 1){
+			cout<<"NO\n";
+			continue;
+		}
+		set<int,greater<int>> diff;
+		FOR(i,N) diff.insert(a[i]-b[i]);
+		diff.insert(0);
+		if(diff.size() > 2 || *diff.begin() > 0) cout<<"NO\n";
+		else cout<<"YES\n";
+	}
 	return 0;
 }

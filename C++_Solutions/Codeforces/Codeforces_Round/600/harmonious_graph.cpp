@@ -15,7 +15,6 @@ using namespace std;
 #define _T cerr<<'\t';
 #define TRACED(_v) cerr<<_v;
 void TRACEV(string a){TRACED(a);}
-void TRACEV(char a){TRACED(a);}
 template<typename... Args> void TRACEV(tuple<Args...> t);
 template<typename l, typename r> void TRACEV(pair<l,r> t);
 template<typename T> void TRACEV(T t){TRACED(t);}
@@ -37,10 +36,58 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define ll long long int
 #define ull unsigned long long int
 #define pii pair<int,int>
+#define swap(a,b) a^=b^=a^=b
+
+vector<int> group;
+vector<int> groupSize;
+vector<int> groupMax;
+
+inline int uFind(int a){
+	int current = a;
+	while(group[current] != -1) current = group[current];
+	if(current != a) group[a] = current;
+	return current;
+}
+
+inline void uMerge(int a, int b){
+	int aP = uFind(a), bP = uFind(b);
+	if(aP == bP) return;
+	if(groupSize[bP] > groupSize[aP]) swap(aP,bP);
+	group[bP] = aP;
+	groupSize[aP] += groupSize[bP];
+	groupMax[aP] = max(groupMax[aP],groupMax[bP]);
+}
 
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+	int N,M;
+	cin>>N>>M;
+	group.resize(N,-1);
+	groupSize.resize(N,1);
+	groupMax.resize(N);
+	FOR(i,N) groupMax[i] = i;
+	int a,b;
+	FOR(i,M){
+		cin>>a>>b;
+		--a;--b;
+		uMerge(a,b);
+	}
+	int currentMax = groupMax[uFind(0)];
+	int current = uFind(0);
+	int add = 0;
+	FOR1(i,N){
+		if(i <= currentMax){
+			if(uFind(current) != uFind(i))++add;
+			uMerge(current,i);
+			currentMax = groupMax[uFind(current)];
+		}
+		else{
+			current = uFind(i);
+			currentMax = groupMax[uFind(i)];
+		}
+	}
+	cout<<add<<'\n';
 
 	return 0;
 }

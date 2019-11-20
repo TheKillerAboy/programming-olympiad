@@ -15,7 +15,6 @@ using namespace std;
 #define _T cerr<<'\t';
 #define TRACED(_v) cerr<<_v;
 void TRACEV(string a){TRACED(a);}
-void TRACEV(char a){TRACED(a);}
 template<typename... Args> void TRACEV(tuple<Args...> t);
 template<typename l, typename r> void TRACEV(pair<l,r> t);
 template<typename T> void TRACEV(T t){TRACED(t);}
@@ -41,6 +40,52 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+	int N;
+	cin>>N;
+	vector<set<int>> links(N);
+	vector<array<int,3>> pairs(N-2);
+	int a,b,c;
+	FOR(i,N-2){
+		cin>>a>>b>>c;
+		--a;--b;--c;
+		links[a].insert(i);
+		links[b].insert(i);
+		links[c].insert(i);
+		pairs[i] = {a,b,c};
+	}
+	int first,second;
+	FOR(i,N) if(links[i].size() == 1){
+		first = i;
+		break;
+	}
+	FOR(i,N) if(links[i].size() == 2 && links[i].find(*links[first].begin()) != links[i].end()){
+		second = i;
+		break;
+	}
+	cout<<first+1<<' '<<second+1<<' ';
+	int third;
+	set<int> used = {first,second};
+	FOR(i,N-2){
+		FORA(ele,links[first]){
+			if(links[second].find(ele) != links[second].end()){
+				bool found = false;
+				FOR(j,3){
+					if(pairs[ele][j] != first && pairs[ele][j] != second && used.find(pairs[ele][j]) == used.end()){
+						third = pairs[ele][j];	
+						found = true;
+						break;
+					}
+				}
+				if(found) break;
+			}
+		}
+		cout<<third+1<<' ';
+		first = second;
+		second = third;
+		used.insert(third);
+	}
+	cout<<'\n';
+
 
 	return 0;
 }

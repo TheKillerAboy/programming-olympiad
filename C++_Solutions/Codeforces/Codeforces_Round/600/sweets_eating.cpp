@@ -2,10 +2,10 @@
 
 using namespace std;
 
-#define FOR(i_,a_) for(int i_=0;i_<a_;++i_)
-#define FORS(s_,i_,a_) for(int i_=s_;i_<a_;++i_)
-#define FORR(i_,a_) for(int i_=a_-1;i_>=0;--i_)
-#define FORI(i_,a_) for(int i_=1;i_<=a_;++i_)
+#define FOR(i_,a_) for(ll i_=0;i_<a_;++i_)
+#define FORS(s_,i_,a_) for(ll i_=s_;i_<a_;++i_)
+#define FORR(i_,a_) for(ll i_=a_-1;i_>=0;--i_)
+#define FORI(i_,a_) for(ll i_=1;i_<=a_;++i_)
 #define FORA(i_,a_) for(auto i_:a_)
 #define FOR1(i_,a_) for(int i_=1;i_<a_;++i_)
 #define FORIT(it_,c_) for(auto it_ = c_.begin(); it_!=c_.end();++it_)
@@ -15,7 +15,6 @@ using namespace std;
 #define _T cerr<<'\t';
 #define TRACED(_v) cerr<<_v;
 void TRACEV(string a){TRACED(a);}
-void TRACEV(char a){TRACED(a);}
 template<typename... Args> void TRACEV(tuple<Args...> t);
 template<typename l, typename r> void TRACEV(pair<l,r> t);
 template<typename T> void TRACEV(T t){TRACED(t);}
@@ -36,11 +35,24 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 
 #define ll long long int
 #define ull unsigned long long int
-#define pii pair<int,int>
+#define pii pair<ll,ll>
 
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-
+	ll N,M;
+	cin>>N>>M;
+	vector<ll> sweets(N);
+	FOR(i,N) cin>>sweets[i];
+	sort(sweets.begin(),sweets.end());
+	vector<ll> eat(N);
+	eat[0] = sweets[0];
+	FOR1(i,M) eat[i] = sweets[i] + eat[i-1];
+	vector<ll> prefixSum(N);
+	prefixSum[0] = sweets[0];
+	FOR1(i,N) prefixSum[i] = prefixSum[i-1] + sweets[i];
+	FORS(M,i,N) eat[i] = eat[i-M] + prefixSum[i];
+	FOR(i,N) cout<<eat[i]<<' ';
+	cout<<'\n';
 	return 0;
 }

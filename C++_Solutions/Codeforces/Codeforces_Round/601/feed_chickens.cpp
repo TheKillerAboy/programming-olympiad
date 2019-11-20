@@ -37,10 +37,68 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define ll long long int
 #define ull unsigned long long int
 #define pii pair<int,int>
+int R,C,K;
+inline pii posToCoor(int i){
+	int r = i/C , c = i%C;
+	if(r%2==0) return {r,c};
+	else return {r,C-1-c};
+}
+
+void nextChar(char& cur){
+	if(cur == 'z') cur = 'A';
+	else if(cur == 'Z') cur = '0';
+	else ++cur;
+}
+void prevChar(char& cur){
+	if(cur == 'A') cur = 'z';
+	else if(cur == '0') cur = 'Z';
+	else --cur;
+}
 
 int main(){
-	cin.tie(0);
-	ios::sync_with_stdio(false);
-
+	// cin.tie(0);
+	// ios::sync_with_stdio(false);
+	int Q;
+	cin>>Q;
+	vector<string> field;
+	vector<vector<char>> output;
+	FOR(i_,Q){
+		cin>>R>>C>>K;
+		field.resize(R);
+		output = vector<vector<char>>(R,vector<char>(C));
+		FOR(i,R) cin>>field[i];
+		int countRise = 0;
+		FOR(r,R) FOR(c,C) if(field[r][c] == 'R') ++countRise;
+		int upper = countRise%K;
+		int current = 0;
+		int r,c;
+		char curChar = 'a';
+		int curInd = 0;
+		FOR(i,R*C){
+			tie(r,c) = posToCoor(i);
+			if(curInd == K) {prevChar(curChar);--curInd;}
+			if(field[r][c] == 'R') ++current;
+			output[r][c] = curChar;
+			if(upper > 0){
+				if(current == countRise/K + 1){
+					current = 0;
+					nextChar(curChar);
+					++curInd;
+					--upper;
+				}
+			}
+			else if(current == countRise/K){
+				current = 0;
+				nextChar(curChar);
+				++curInd;
+			}
+		}
+		FOR(r,R){
+			FOR(c,C){
+				cout<<output[r][c];
+			}
+			cout<<'\n';
+		}
+	}
 	return 0;
 }

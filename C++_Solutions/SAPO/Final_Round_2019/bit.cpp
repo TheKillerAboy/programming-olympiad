@@ -15,7 +15,6 @@ using namespace std;
 #define _T cerr<<'\t';
 #define TRACED(_v) cerr<<_v;
 void TRACEV(string a){TRACED(a);}
-void TRACEV(char a){TRACED(a);}
 template<typename... Args> void TRACEV(tuple<Args...> t);
 template<typename l, typename r> void TRACEV(pair<l,r> t);
 template<typename T> void TRACEV(T t){TRACED(t);}
@@ -41,6 +40,8 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-
+	int N,M;
+	cin>>N>>M;
+	vector<int> permutation
 	return 0;
 }

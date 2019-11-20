@@ -15,7 +15,6 @@ using namespace std;
 #define _T cerr<<'\t';
 #define TRACED(_v) cerr<<_v;
 void TRACEV(string a){TRACED(a);}
-void TRACEV(char a){TRACED(a);}
 template<typename... Args> void TRACEV(tuple<Args...> t);
 template<typename l, typename r> void TRACEV(pair<l,r> t);
 template<typename T> void TRACEV(T t){TRACED(t);}
@@ -41,6 +40,44 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-
+	int N;
+	cin>>N;
+	vector<int> events(N);
+	set<int> people;
+	FOR(i,N) cin>>events[i];
+	list<int> validSeq;
+	bool valid = true;
+	int lastBegin = 0;
+	set<int> haveExisted;
+	FOR(i,N){
+		if(events[i] > 0) {
+			if(haveExisted.find(events[i]) == haveExisted.end()){
+				haveExisted.insert(events[i]);
+				people.insert(events[i]);
+			}
+			else{
+				valid = false;
+				break;
+			}
+		}
+		if(events[i] < 0){
+			if(people.find(-events[i]) == people.end()) {valid = false;break;}
+			else{
+				people.erase(people.find(-events[i]));
+			}
+		}
+		if(people.empty()){
+			validSeq.push_back(i-lastBegin+1);
+			haveExisted.clear();
+			lastBegin = i + 1;
+		}
+	}
+	if(!people.empty()) valid = false;
+	if(valid){
+		cout<<validSeq.size()<<'\n';
+		FORA(ele,validSeq) cout<<ele<<' ';
+		cout<<'\n';
+	}
+	else cout<<-1<<'\n';
 	return 0;
 }
