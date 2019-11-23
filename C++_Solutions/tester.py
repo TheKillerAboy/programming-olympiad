@@ -105,6 +105,7 @@ def tester(directory,source_file,*args,**kwargs):
 		return
 	files_in_direcory = set(filter(lambda file : fileMeetConstraints(file,files_in_direcory,source_file,**kwargs),files_in_direcory))
 	num_of_tests = len(files_in_direcory)
+	files_in_direcory = sorted(list(files_in_direcory))
 	for file in files_in_direcory:
 		output_file = file.replace(KWARGS.inputExt,KWARGS.outputExt)
 		p = Popen(f'timeout {KWARGS.timeLimit_ms/1000} "{directory}/{source_file}" < "{directory}/{file}" > "{directory}/{output_file}.tmp" \

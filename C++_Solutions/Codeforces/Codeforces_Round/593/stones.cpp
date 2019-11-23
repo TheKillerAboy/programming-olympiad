@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-#define ll long long int
 
 #define FOR(i_,a_) for(int i_=0;i_<a_;++i_)
 #define FORS(s_,i_,a_) for(int i_=s_;i_<a_;++i_)
@@ -35,76 +34,26 @@ TRACED("[");TRACEV(*it);for(++it;it!=t.end();++it){TRACED(", ");TRACEV(*it);}TRA
 template<typename T> void TRACE(T t){TRACEV(t);_N;}
 template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TRACE(args...);}
 
-//TEMPLATE START
-template<typename T>
-struct BIT{
-	vector<T> BIT_;
-	inline size_t size(){return BIT_.size();}
-	template<typename I>
-	void update(I i, T inc){
-		i = i + 1;
-		while(i < size()){
-			BIT_[i] += inc;
-			i += i&-i;
-		}
-	}
-	template<typename I>
-	T query(I i){
-		i = i + 1;
-		T out = BIT_[0];
-		while(i > 0){
-			out += BIT_[i];
-			i -= i&-i;
-		}
-		return out;
-	}
-	template<typename I>
-	T query(I l, I r){
-		return query(r)-query(l-1);
-	}
-	template<typename C>
-	BIT(const C& c){
-		BIT_ = vector<T>(c.size()+1,0);
-		int i = 0;
-		for(T val : c){
-			update(i,val);
-			++i;
-		}
-	}
-	BIT(){}
-	void resize(size_t N){
-		BIT_.resize(N,0);
-	}
-};
+#define ll long long int
+#define ull unsigned long long int
+#define pii pair<int,int>
 
-template<typename T>
-struct BITExt{
-	BIT<T> bit1,bit2;
-	BITExt(size_t N){
-		bit1.resize(N+1);
-		bit2.resize(N+1);
-	}
-	template<typename I>
-	void update(I l, I r, T inc){
-		if(r<l) return;
-		bit1.update(l,inc);
-		bit1.update(r+1,-inc);
-		bit2.update(l,inc*(l-1));
-		bit2.update(r+1,-inc*r);
-	}
-	template<typename I>
-	T query(I i){
-		return bit1.query(i)*i - bit2.query(i);
-	}
-	template<typename I>
-	T query(I l, I r){
-		return query(r) - query(l-1);
-	}
-};
-//TEMPLATE END
-
-//test
 int main(){
-	vector<ll> arr = {3,2,1,4,5,2,3};
-	BITExt<ll> myBIT(20);
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	int a,b,c;
+	int Q;
+	cin>>Q;
+	FOR(i_,Q){
+	int MAX = 0;
+	cin>>a>>b>>c;
+		FOR(e,c/2+1){
+			int d = min(a,(b-e)/2);
+			if(b-e < 0) continue;
+			MAX = max(MAX,3*e+3*d);
+		}
+		cout<<MAX<<'\n';
+	}
+
+	return 0;
 }

@@ -36,22 +36,96 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define ll long long int
 #define ull unsigned long long int
 #define pii pair<int,int>
+#define INF LLONG_MAX;
 
-vector<int> heights;
-int N;	
-
-int dp(int i, bool hasRoof, int height){
-	if(hasRoof){
-		return 
+//TEMPLATE START
+template<typename T>
+struct BIT{
+	vector<T> BIT_;
+	inline size_t size(){return BIT_.size();}
+	template<typename I>
+	void update(I i, T inc){
+		i = i + 1;
+		while(i < size()){
+			BIT_[i] += inc;
+			i += i&-i;
+		}
 	}
+	template<typename I>
+	T query(I i){
+		i = i + 1;
+		T out = BIT_[0];
+		while(i > 0){
+			out += BIT_[i];
+			i -= i&-i;
+		}
+		return out;
+	}
+	template<typename I>
+	T query(I l, I r){
+		return query(r)-query(l-1);
+	}
+	template<typename C>
+	BIT(const C& c){
+		BIT_ = vector<T>(c.size()+1,0);
+		int i = 0;
+		for(T val : c){
+			update(i,val);
+			++i;
+		}
+	}
+	BIT(){}
+	void resize(size_t N){
+		BIT_.resize(N,0);
+	}
+};
+
+template<typename T>
+struct BITExt{
+	BIT<T> bit1,bit2;
+	BITExt(size_t N){
+		bit1.resize(N+1);
+		bit2.resize(N+1);
+	}
+	template<typename I>
+	void update(I l, I r, T inc){
+		if(r<l) return;
+		bit1.update(l,inc);
+		bit1.update(r+1,-inc);
+		bit2.update(l,inc*(l-1));
+		bit2.update(r+1,-inc*r);
+	}
+	template<typename I>
+	T query(I i){
+		return bit1.query(i)*i - bit2.query(i);
+	}
+	template<typename I>
+	T query(I l, I r){
+		return query(r) - query(l-1);
+	}
+};
+//TEMPLATE END
+int search(int l, int r){
+	int m = (l+r)>>1;
+	
 }
+
 
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+	int N;
 	cin>>N;
-	heights.resize(N);
+	vector<ll> heights(N);
 	FOR(i,N) cin>>heights[i];
-	cout<<
+	BITExt<ll> myBit;
+	FOR(i,N) myBit.update(i,i,heights[i]+i-1);
+	ll MIN = INF;
+	FOR(i,N){
+		myBit.update(0,i-1,-1);
+		myBit.update(i,N-1,1);
+		MIN = min(MIN,search(max(i,N-1-i)+1,10e9));
+	}
+	cout<<MIN<<'\n';
 	return 0;
 }
