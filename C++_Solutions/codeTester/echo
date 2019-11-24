@@ -1,0 +1,1 @@
+printf '\nsource ~/.codeTester_shell_programmer.sh' >> ~/.bashrc bash

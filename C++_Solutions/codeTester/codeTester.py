@@ -1,7 +1,7 @@
 from sys import argv
 from os import listdir
 from subprocess import PIPE, Popen
-from os.path import isfile, join
+from os.path import isfile, join, abspath
 from types import SimpleNamespace
 
 HELP_INFO = \
@@ -27,6 +27,10 @@ Flags:
 		enables capital sensitivity when prefixOnly or fileOnly is active
 	excludeList, eL (list of string arguments):
 		exclude files with any of these strings in them
+	sourceDirectory, sD (string argument):
+		directory where source file is located
+	testDirectory, tD (string argument):
+		directory where test files are located
 
 List of arguments:
 	starts and ends with square brackets with commmas acting as seperator, and has no spaces between items
@@ -69,6 +73,8 @@ def parseArgv(method, nicknames = {}, defaults = {}):
 				__args.append(value)
 		except:
 			break
+	__kwargs["testDirectory"] = abspath(__kwargs["testDirectory"])
+	__kwargs["sourceDirectory"] = abspath(__kwargs["sourceDirectory"])
 	if(__kwargs["help"]):
 		print(HELP_INFO)
 	else:
@@ -96,11 +102,11 @@ def fileMeetConstraints(file, files_in_direcory,source_file,prefixOnly,inputExt,
 
 	return True
 
-def tester(directory,source_file,*args,**kwargs):
+def tester(source_file,*args,**kwargs):
 	num_of_correct = 0
 	KWARGS = SimpleNamespace(**kwargs)
-	files_in_direcory = {f for f in listdir(directory) if isfile(join(directory, f))}
-	if source_file not in files_in_direcory:
+	files_in_direcory = {f for f in listdir(KWARGS.testDirectory) if isfile(join(KWARGS.testDirectory, f))}
+	if source_file not in listdir(f"{KWARGS.sourceDirectory}"):
 		print("Source file doesn't exist")
 		return
 	files_in_direcory = set(filter(lambda file : fileMeetConstraints(file,files_in_direcory,source_file,**kwargs),files_in_direcory))
@@ -108,8 +114,8 @@ def tester(directory,source_file,*args,**kwargs):
 	files_in_direcory = sorted(list(files_in_direcory))
 	for file in files_in_direcory:
 		output_file = file.replace(KWARGS.inputExt,KWARGS.outputExt)
-		p = Popen(f'timeout {KWARGS.timeLimit_ms/1000} "{directory}/{source_file}" < "{directory}/{file}" > "{directory}/{output_file}.tmp" \
-			;diff -E -b -Z "{directory}/{output_file}.tmp" "{directory}/{output_file}"; rm -f "{directory}/{output_file}.tmp"', shell=True, stdout=PIPE, stderr=PIPE)
+		p = Popen(f'timeout {KWARGS.timeLimit_ms/1000} "{KWARGS.sourceDirectory}/{source_file}" < "{KWARGS.testDirectory}/{file}" > "{KWARGS.testDirectory}/{output_file}.tmp" \
+			;diff -E -b -Z "{KWARGS.testDirectory}/{output_file}.tmp" "{KWARGS.testDirectory}/{output_file}"; rm -f "{KWARGS.testDirectory}/{output_file}.tmp"', shell=True, stdout=PIPE, stderr=PIPE)
 		stdout, stderr = map(lambda st : st.decode('utf-8'),p.communicate())
 		terminal_return = ("Output Incorrect" if stdout != '' else "") + '\t' + ("Program Timeout" if stderr != '' else "") 
 		print(file.replace(KWARGS.inputExt,''), end = '')
@@ -129,4 +135,4 @@ def tester(directory,source_file,*args,**kwargs):
 		print("No tests found.")
 
 if __name__ == '__main__':
-	parseArgv(tester,{'p':"prefixOnly",'oN':"outputNeeded","iE":"inputExt","oE":"outputExt","tl":"timeLimit_ms","cS":"capSensitive","sE":"showError","h":"help","fO":"fileOnly","sDE":"showDetailError","eL":"excludeList"},{"prefixOnly" : False, "timeLimit_ms" : 2000, "inputExt" : '.in', "outputExt" : '.out', "outputNeeded" : False, "capSensitive" : False, "showError" : False,"help" : False, "fileOnly" : "","showDetailError":False, "excludeList":[]})
+	parseArgv(tester,{'p':"prefixOnly",'oN':"outputNeeded","iE":"inputExt","oE":"outputExt","tl":"timeLimit_ms","cS":"capSensitive","sE":"showError","h":"help","fO":"fileOnly","sDE":"showDetailError","eL":"excludeList","tD":"testDirectory", "sD":"sourceDirectory"},{"prefixOnly" : False, "timeLimit_ms" : 2000, "inputExt" : '.in', "outputExt" : '.out', "outputNeeded" : False, "capSensitive" : False, "showError" : False,"help" : False, "fileOnly" : "","showDetailError":False, "excludeList":[], "testDirectory":"./", "sourceDirectory" : "./"})
