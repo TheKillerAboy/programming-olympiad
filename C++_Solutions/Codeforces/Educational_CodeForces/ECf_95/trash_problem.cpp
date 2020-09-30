@@ -1,11 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-#define ordered_set tree<int, null_type,less<int>, rb_tree_tag,tree_order_statistics_node_update> 
-
 #define FOR(i_,a_) for(int i_=0;i_<a_;++i_)
 #define FORS(s_,i_,a_) for(int i_=s_;i_<a_;++i_)
 #define FORR(i_,a_) for(int i_=a_-1;i_>=0;--i_)
@@ -38,25 +33,77 @@ TRACED("[");TRACEV(*it);for(++it;it!=t.end();++it){TRACED(", ");TRACEV(*it);}TRA
 template<typename T> void TRACE(T t){TRACEV(t);_N;}
 template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TRACE(args...);}
 
-#define ll long long int
 #define ull unsigned long long int
 #define pii pair<int,int>
+#define ll long long int
 
 int n,q;
-ordered_set piles;
-multiset<int> diffrences;
+int t,x;
+set<ll> piles;
+multiset<ll> diffrences;
+
+auto prev_piles(int x){
+	if(piles.find(x) == piles.begin()){
+		return piles.end();
+	}
+	return prev(piles.find(x));
+}
 
 int main(){
-	cin.tie(0);
-	ios::sync_with_stdio(false);
+	// cin.tie(0);
+	// ios::sync_with_stdio(false);
 
 	cin>>n>>q;
 	int val;
 	FOR(i,n){cin>>val;piles.insert(val);}
-	FOR(i,n-1){diffrences.insert(piles.find_by_order(i)-piles.find_by_order(i+1));}
-	cout<<*diffrences.begin()<<'\n';
+	auto it = piles.begin();
+	FOR(i,n-1){diffrences.insert(*(it++)-*it);}
+	if(piles.size()<=2){
+		cout<<"0\n";
+	}
+	else{
+		cout<<*piles.rbegin() - *piles.begin() + *diffrences.begin()<<'\n';
+	}
 	while(q--){
-
+		cin>>t>>x;
+		if(t==1){
+			piles.insert(x);
+			auto p_k_it = prev_piles(x), p_k_2_it = ++piles.find(x);
+			ll p_k, p_k_2;
+			if(p_k_it!=piles.end()){
+				p_k = *p_k_it;
+				diffrences.insert(p_k-x);
+			}
+			if(p_k_2_it!=piles.end()){
+				p_k_2 = *p_k_2_it;
+				diffrences.insert(x-p_k_2);
+			}
+			if(p_k_it!=piles.end()&&p_k_2_it!=piles.end()){
+				diffrences.erase(diffrences.find(p_k-p_k_2));
+			}
+		}
+		else{
+			auto p_k_n1_it = prev_piles(x), p_k_1_it = ++piles.find(x);
+			piles.erase(x);
+			ll p_k_n1, p_k_1;
+			if(p_k_1_it!=piles.end()){
+				p_k_1 = *p_k_1_it;
+				diffrences.erase(diffrences.find(x-p_k_1));
+			}
+			if(p_k_n1_it!=piles.end()){
+				p_k_n1 = *p_k_n1_it;
+				diffrences.erase(diffrences.find(p_k_n1-x));
+			}
+			if(p_k_1_it!=piles.end()&&p_k_n1_it!=piles.end()){
+				diffrences.insert(p_k_n1-p_k_1);
+			}
+		}
+		if(piles.size()<=2){
+			cout<<"0\n";
+		}
+		else{
+			cout<<*piles.rbegin() - *piles.begin() + *diffrences.begin()<<'\n';
+		}
 	}
 
 	return 0;
