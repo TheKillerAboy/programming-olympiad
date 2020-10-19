@@ -41,20 +41,12 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 
 map<int,int> DP;
 
-int fastest(int k){
-	// TRACE(k);
-	if(k==1) return 0;
-	if(DP.find(k)!=DP.end()) return DP[k];
-	int a = floor(sqrt(k));
-	int out = k-1;
-	FORS(2,i,a+2){
-		if(k%i>0)
-			out = min(max(i-1,0)+max(k/i-1,0) + fastest(k%i) + 1,out);
-		else
-			out = min(max(i-1,0)+max(k/i-1,0),out);
-	}
-	DP[k] = out;
-	return out;
+ll bs(int l, int r, int val){
+	int mid = (l+r)>>1;
+	if(l==r) return l;
+	ll out = (1+mid/2)*(1+mid-mid/2);
+	if(val<=out) return bs(l,mid,val);
+	else return bs(mid+1,r,val);
 }
 
 int main(){
@@ -65,7 +57,7 @@ int main(){
 	cin>>t;
 	while(t--){
 		cin>>n;
-		cout<<fastest(n)<<'\n';
+		cout<<bs(0,70000,n)<<'\n';
 	}
 
 	return 0;

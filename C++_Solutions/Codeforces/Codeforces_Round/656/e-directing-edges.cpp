@@ -38,10 +38,63 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define ll long long int
 #define ull unsigned long long int
 #define pii pair<int,int>
+#define SIZE 2*(int)1e5+5
+
+vector<set<int>> connections;
+set<pii> connections_remaining;
+map<pii,int> directions;
+
+pii sort_pii(pii a){
+	if(a.first>a.second) return {a.second,a.first};
+	return a;
+}
+
+void set_direction(int u, int v, int d){
+	directions[sort_pii(pii{u,v})] = d;
+}
+
+int get_direction(int u, int v){
+	return directions[sort_pii(pii{u,v})];
+}
+
+int t,n,m;
+bool dir;
+
+void remove_leaves(){
+	while(!connections_remaining.empty()&&(*connections_remaining.begin()).first<2){
+		int i = (*connections_remaining.begin()).second;
+		connections_remaining.erase(pii{connections[i].size(),i});
+		if((*connections_remaining.begin()).first>0){
+			int node = *connections[i].begin();
+			connections_remaining.erase(connections_remaining.find({connections[node].size(),node}));
+			connections[node].erase(i);
+			connections_remaining.insert(pii{connections[node].size(),node});
+		}
+	}
+}
 
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-
+	cin>>t;
+	while(t--){
+		connections.clear();
+		connections_remaining.clear();
+		directions.clear();
+		cin>>n>>m;
+		connections.resize(n);
+		TRACE("H");
+		int u,v;
+		FOR(i,m){
+			cin>>dir>>u>>v;
+			u--;v--;
+			connections[u].insert(v);
+			connections[v].insert(u);
+			set_direction(u,v,dir?u:-1);
+		}
+		FOR(i,n) connections_remaining.insert(pii{connections[i].size(),i});
+		remove_leaves();
+		TRACE(connections_remaining);
+	}
 	return 0;
 }

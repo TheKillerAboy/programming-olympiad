@@ -39,9 +39,45 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define ull unsigned long long int
 #define pii pair<int,int>
 
+int a[3],b[3],a_[3],b_[3];
+int max_,min_,val;
+int n;
+
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+	cin>>n;
+	FOR(i,3) cin>>a_[i];
+	FOR(i,3) cin>>b_[i];
+	max_ = 0;
+	copy(a_,a_+3,a);
+	copy(b_,b_+3,b);
+	FOR(i,3){
+		val = min(a[i],b[(i+1)%3]);
+		max_ += val;
+	}
+	min_ = n;
+	pii permu[6];
+	FOR(i,3){
+		permu[2*i] = {i,(i+2)%3};
+		permu[2*i+1] = {i,i};
+	}
+	sort(permu,permu+6);
+	do{
+		int min_2 = n;
+		copy(a_,a_+3,a);
+		copy(b_,b_+3,b);
+		FOR(i,6){
+			val = min(a[permu[i].first],b[permu[i].second]);
+			min_2 -= val;
+			a[permu[i].first] -= val;
+			b[permu[i].second] -= val;
+		}
+		min_ = min(min_,min_2);
+	}
+	while(next_permutation(permu,permu+6));
+	cout<<min_<<'\n'<<max_<<'\n';
+
 
 	return 0;
 }

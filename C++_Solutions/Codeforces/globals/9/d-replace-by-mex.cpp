@@ -39,9 +39,65 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define ull unsigned long long int
 #define pii pair<int,int>
 
+int arr[1000];
+multiset<int> arrs;
+int t,n;
+list<int> commands;
+map<int,set<int>> locations;
+
+
+int mex(){
+	int k = -1;
+	int i = 0;
+	FORA(d,arrs){
+		if(d==k+1) k++;
+		else if(d>k) {k++; break;}
+		i++;
+	}
+	if(i==n) k++;
+	return k;
+}
+
+void set_arr(int i, int v){
+	locations[arr[i]].erase(i);
+	if(locations[arr[i]].empty()) locations.erase(arr[i]);
+
+	arrs.erase(arrs.find(arr[i]));
+	commands.push_back(i+1);
+	arr[i] = v;
+	arrs.insert(arr[i]);
+	locations[arr[i]].insert(i);
+}
+
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-
+	cin>>t;
+	while(t--){
+		cin>>n;
+		arrs.clear();
+		commands.clear();
+		locations.clear();
+		FOR(i,n){
+			cin>>arr[i];
+			arrs.insert(arr[i]);
+			locations[arr[i]].insert(i);
+		}
+		for(int me = mex(); me != n; me = mex()){
+			set_arr(me,me);
+		}
+		FOR(i,n){
+			int loc = *locations[i].begin();
+			if(loc != i){
+				set_arr(loc,n);
+			}
+			for(int me = mex(); me != n; me = mex()){
+				set_arr(me,me);
+			}
+		}
+		cout<<commands.size()<<'\n';
+		FORA(c,commands) cout<<c<<' ';
+		cout<<'\n';
+	}
 	return 0;
 }

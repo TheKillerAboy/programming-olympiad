@@ -10,10 +10,10 @@ using namespace std;
 #define FOR1(i_,a_) for(int i_=1;i_<a_;++i_)
 #define FORIT(it_,c_) for(auto it_ = c_.begin(); it_!=c_.end();++it_)
 
-#define _ cerr<<' ';
-#define _N cerr<<'\n';
-#define _T cerr<<'\t';
-#define TRACED(_v) cerr<<_v;
+#define _ cout<<' ';
+#define _N cout<<'\n';
+#define _T cout<<'\t';
+#define TRACED(_v) cout<<_v;
 void TRACEV(string a){TRACED(a);}
 void TRACEV(char a){TRACED(a);}
 template<typename... Args> void TRACEV(tuple<Args...> t);
@@ -31,16 +31,34 @@ template<typename... Args> void TRACEV(tuple<Args...> t){TRACET(t);}
 template<typename l, typename r> void TRACEV(pair<l,r> t){TRACEP(t);}
 template<template<typename...> class T, typename... K> void TRACEV(T<K...> t){if(t.empty()){TRACEV("[]");return;}auto it = t.begin();
 TRACED("[");TRACEV(*it);for(++it;it!=t.end();++it){TRACED(", ");TRACEV(*it);}TRACED("]");}
+template<typename T> void TRACEV(T* b, T* e){if(b==e){TRACEV("[]");return;}TRACED("[");TRACEV(*b);while(++b!=e){TRACED(", ");TRACEV(*b);}TRACED("]");}
 template<typename T> void TRACE(T t){TRACEV(t);_N;}
 template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TRACE(args...);}
 
 #define ll long long int
 #define ull unsigned long long int
 #define pii pair<int,int>
+#define SSIZE (int)1e5+5
+#define DSSIZE 2*(int)1e5+5
+#define BSIZE (int)1e6+5
+
+int t,n;
+int arr[BSIZE];
 
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+	cin>>t;
+	while(t--){
+		cin>>n;
+		FOR(i,n) cin>>arr[i];
+		sort(arr,arr+n);
+		bool pos = true;
+		FOR1(i,n){
+			if(arr[i]-arr[i-1]>1) pos = false;
+		}
+		cout<<(pos?"YES":"NO")<<'\n';
+	}
 
 	return 0;
 }

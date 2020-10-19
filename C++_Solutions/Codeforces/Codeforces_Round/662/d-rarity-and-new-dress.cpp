@@ -39,9 +39,55 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define ull unsigned long long int
 #define pii pair<int,int>
 
+char cloth[2000][2000];
+
+int n,m;
+
+int DP[2000][2000][2][2];
+
+char get_color(int i, int j){
+	if(i<0||i>=n) return '!';
+	if(j<0||j>=m) return '!';
+	return cloth[i][j];
+}
+
+int dp(int i, int j, bool i_f, bool j_f){
+	if(i<0||i>=n) return 0;
+	if(j<0||j>=m) return 0;
+	int i_c = i_f?1:-1;
+	int j_c = j_f?1:-1;
+	int& out = DP[i][j][i_f][j_f];
+	if(out != -1) return out;
+	out = 0;
+	if(get_color(i,j)==get_color(i+i_c,j)&&get_color(i,j)==get_color(i,j+j_c)){
+		out = min(dp(i+i_c,j,i_f,j_f),dp(i,j+j_c,i_f,j_f));
+	}
+	out++;
+	return out;
+}
+
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-
+	cin>>n>>m;
+	string val;
+	FOR(i,n){
+		cin>>val;
+		FOR(j,m) cloth[i][j] = val[j];
+	}
+	FOR(i,n)FOR(j,m)FOR(k,2)FOR(l,2)DP[i][j][k][l] = -1;
+	// dp(0,0,1,1);
+	// dp(0,m-1,1,0);
+	// dp(n-1,0,0,1);
+	// dp(n-1,m-1,0,0);
+	ll out = 0;
+	FOR(i,n){
+		FOR(j,m){
+			int min_ = INT_MAX;
+			FOR(k,2) FOR(l,2) min_ = min(min_,dp(i,j,k,l));
+			out += min_;
+		}
+	}
+	cout<<out<<'\n';
 	return 0;
 }

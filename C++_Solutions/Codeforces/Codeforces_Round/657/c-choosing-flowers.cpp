@@ -1,13 +1,14 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+#define ll long long int
 
-#define FOR(i_,a_) for(int i_=0;i_<a_;++i_)
-#define FORS(s_,i_,a_) for(int i_=s_;i_<a_;++i_)
-#define FORR(i_,a_) for(int i_=a_-1;i_>=0;--i_)
-#define FORI(i_,a_) for(int i_=1;i_<=a_;++i_)
+#define FOR(i_,a_) for(ll i_=0;i_<a_;++i_)
+#define FORS(s_,i_,a_) for(ll i_=s_;i_<a_;++i_)
+#define FORR(i_,a_) for(ll i_=a_-1;i_>=0;--i_)
+#define FORI(i_,a_) for(ll i_=1;i_<=a_;++i_)
 #define FORA(i_,a_) for(auto i_:a_)
-#define FOR1(i_,a_) for(int i_=1;i_<a_;++i_)
+#define FOR1(i_,a_) for(ll i_=1;i_<a_;++i_)
 #define FORIT(it_,c_) for(auto it_ = c_.begin(); it_!=c_.end();++it_)
 
 #define _ cout<<' ';
@@ -35,13 +36,48 @@ template<typename T> void TRACEV(T* b, T* e){if(b==e){TRACEV("[]");return;}TRACE
 template<typename T> void TRACE(T t){TRACEV(t);_N;}
 template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TRACE(args...);}
 
-#define ll long long int
-#define ull unsigned long long int
-#define pii pair<int,int>
+#define ull unsigned long long ll
+#define pii pair<ll,ll>
+#define iii array<ll,3>
+#define SSIZE (ll)1e5+5
+#define DSSIZE 2*(ll)1e5+5
+#define BSIZE (ll)1e6+5
+
+ll t,n,m;
+ll a[SSIZE],b[SSIZE];
+ll asorted[SSIZE];
+ll suffixsum[SSIZE];
 
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+	cin>>t;
+	while(t--){
+		cin>>n>>m;
+		FOR(i,m) cin>>a[i]>>b[i];
+		FOR(i,m) asorted[i]=a[i];
+		sort(asorted,asorted+m);
+		suffixsum[m-1] = asorted[m-1];
+		FOR1(i,m) suffixsum[m-1-i] = suffixsum[m-i]+asorted[m-1-i];
+		ll out = 0;
+		FOR(i,m){
+			ll pos = upper_bound(asorted,asorted+m,b[i]) - asorted;
+			ll count = m - pos;
+			ll sum = 0;
+			if(pos!=m){
+				sum += suffixsum[pos];
+			}
+			if(a[i]<=b[i]){
+				count++;
+				sum += a[i];
+			}
+			if(count>=n){
+				out = max(out, suffixsum[m-n]);
+			}
+			else out = max(out, sum + (n-count)*b[i]);
+		}
+		cout<<out<<'\n';
+	}
 
 	return 0;
 }
