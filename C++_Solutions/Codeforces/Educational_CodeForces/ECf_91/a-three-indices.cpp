@@ -39,9 +39,33 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define ull unsigned long long int
 #define pii pair<int,int>
 
+int arr[1000];
+pii prefixMin[1000], suffixMin[1000];
+
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+	int t;
+	cin>>t;
+	while(t--){
+		int n;
+		cin>>n;
+		FOR(i,n) cin>>arr[i];
+		prefixMin[0] = pii{arr[0],0};
+		FOR1(i,n) prefixMin[i] = min(prefixMin[i-1],pii{arr[i],i});
+		suffixMin[n-1] = {arr[n-1],n-1};
+		FOR1(i,n) suffixMin[n-1-i] = min(suffixMin[n-i],pii{arr[n-1-i],n-1-i});
+		bool pos = false;
+		FOR1(i,n-1){
+			if(prefixMin[i-1].first<arr[i]&&arr[i]>suffixMin[i+1].first){
+				cout<<"YES\n";
+				cout<<prefixMin[i-1].second+1<<' '<<i+1<<' '<<suffixMin[i+1].second+1<<'\n';
+				pos = true;
+				break;
+			}
+		}
+		if(!pos) cout<<"NO\n";
+	}
 
 	return 0;
 }

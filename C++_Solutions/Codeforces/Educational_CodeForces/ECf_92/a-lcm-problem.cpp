@@ -39,9 +39,27 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define ull unsigned long long int
 #define pii pair<int,int>
 
+inline int gcd(int a, int b){
+	if(b>a) return gcd(b,a);
+	return b==0?a:gcd(b,a%b);
+}
+
+inline int lcm(int a, int b){
+	return (a*b)/gcd(a,b);
+}
+
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+
+	int t;
+	int l,r;
+	cin>>t;
+	while(t--){
+		cin>>l>>r;
+		if(r>=2*l) cout<<l<<' '<<2*l<<'\n';
+		else cout<<"-1 -1\n";
+	}
 
 	return 0;
 }

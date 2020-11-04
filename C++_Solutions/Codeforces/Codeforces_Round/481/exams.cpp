@@ -8,59 +8,82 @@ using namespace std;
 #define FORI(i_,a_) for(int i_=1;i_<=a_;++i_)
 #define FORA(i_,a_) for(auto i_:a_)
 #define FOR1(i_,a_) for(int i_=1;i_<a_;++i_)
+#define FORIT(it_,c_) for(auto it_ = c_.begin(); it_!=c_.end();++it_)
 
-#define _ cerr<<' ';
-#define _N cerr<<'\n';
-#define TRACEV(v_) cerr<<v_;
-#define TRACEP(p_) cerr<<"("<<p_.first<<", "<<p_.second<<") ";
-#define TRACECE(c_,tt_) for(auto e_:c_){tt_(e_);_;}_N;
-#define TRACEC(c_) TRACECE(c_,TRACEV)
-#define TRACEE(v_,tt_) tt_(v_);_N;
-#define TRACE(v_) TRACEE(v_,TRACEV);
-#define TRACEEP(v_) TRACEE(v_,TRACEP);
+#define _ cout<<' ';
+#define _N cout<<'\n';
+#define _T cout<<'\t';
+#define TRACED(_v) cout<<_v;
+void TRACEV(string a){TRACED(a);}
+void TRACEV(char a){TRACED(a);}
+template<typename... Args> void TRACEV(tuple<Args...> t);
+template<typename l, typename r> void TRACEV(pair<l,r> t);
+template<typename T> void TRACEV(T t){TRACED(t);}
+template<template<typename...> class T, typename... K> void TRACEV(T<K...> t);
+template<typename T, size_t S> void TRACEV(array<T,S> t){TRACEV("[");TRACEV(t[0]);FOR1(i,S){TRACEV(", ");TRACEV(t[i]);}TRACEV("]");}
+template<typename T,typename... Args>void TRACEUT_(T t){TRACEV(t);}
+template<typename T,typename... Args>void TRACEUT_(T t, Args... args){TRACEV(t); TRACED(", "); TRACEUT_(args...);}
+template<typename T,typename... Args>void TRACEUT(T t, Args... args){TRACED('('); TRACEUT_(t,args...); TRACED(")");}
+template<typename Tuple, size_t... Is>void TRACET_(Tuple t, index_sequence<Is...>){TRACEUT(get<Is>(t)...);}
+template<typename Tuple>void TRACET(Tuple t){TRACET_(t,make_index_sequence<tuple_size<Tuple>::value>{});}
+#define TRACEP(p_) TRACED("("); TRACEV(p_.first);TRACED(", ");TRACEV(p_.second);TRACED(")");
+template<typename... Args> void TRACEV(tuple<Args...> t){TRACET(t);}
+template<typename l, typename r> void TRACEV(pair<l,r> t){TRACEP(t);}
+template<template<typename...> class T, typename... K> void TRACEV(T<K...> t){if(t.empty()){TRACEV("[]");return;}auto it = t.begin();
+TRACED("[");TRACEV(*it);for(++it;it!=t.end();++it){TRACED(", ");TRACEV(*it);}TRACED("]");}
+template<typename T> void TRACEV(T* b, T* e){if(b==e){TRACEV("[]");return;}TRACED("[");TRACEV(*b);while(++b!=e){TRACED(", ");TRACEV(*b);}TRACED("]");}
+template<typename T> void TRACE(T t){TRACEV(t);_N;}
+template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TRACE(args...);}
 
 #define ll long long int
 #define ull unsigned long long int
+#define pii pair<int,int>
+#define iii array<int,3>
+#define SSIZE (int)1e5+5
+#define DSSIZE 2*(int)1e5+5
+#define BSIZE (int)1e6+5
 
+int n,m;
+int arr[101];
+set<iii> sdc;
 
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-	int N,M;
-	cin>>N>>M;
-	vector<int> days(N,0);
-	bool isPos = true;
-	multiset<pair<int,tuple<int,int,int>>> queue;
-	int a,b,c;
-	FOR(i,M){
-		cin>>a>>b>>c;
-		queue.insert({c,{a-1,b-1,i}});
-		if(days[b-1] == 0)
-			days[b-1] = M+1;
-		else isPos = false;
+	cin>>n>>m;
+	FORI(i,n) arr[i] = 0;
+	iii cur;
+	FOR(i,m) {
+		FOR(j,3) cin>>cur[j];
+		arr[cur[1]] = m+1+i;
+		sdc.insert(cur);
 	}
-	int ind, be, examda, need; 
-	while(!queue.empty()){
-		need = (*queue.begin()).first;
-		tie(be,examda,ind) = (*queue.begin()).second;
-		queue.erase(queue.begin());
-		int index = examda-1;
-		while(index >= be && need > 0){
-			if(days[index] == 0){
-				--need;
-				days[index] = ind+1;
+	set<pii> queue;
+	int j = 0;
+	bool pos = true;
+	FORI(i,n){
+		while(!sdc.empty() && (*sdc.begin())[0]==i){
+			iii cur = *sdc.begin();
+			sdc.erase(sdc.begin());
+			queue.insert({cur[1],cur[2]});
+		}
+		auto pot_nonpos = queue.lower_bound({i,-1});
+		if(pot_nonpos!=queue.end()&&(*pot_nonpos).first==i) pos = false;
+		if(!queue.empty()){
+			if(arr[i]==0){
+				pii cur = *queue.begin();
+				queue.erase(queue.begin());
+				arr[i] = arr[cur.first]-m;
+				cur.second--;
+				if(cur.second>0) queue.insert(cur);
 			}
-			--index;
 		}
-		if(need > 0) isPos = false;
 	}
-	if(!isPos) cout<<-1<<'\n';
-	else{
-		FOR(i,N){
-			cout<<days[i]<<' ';
-		}
-		cout<<'\n';
-	}
+	FORI(i,n) if(arr[i]>=m+1) arr[i]=m+1;
+	if(pos) FORI(i,n) cout<<arr[i]<<' ';
+	else cout<<-1;
+	cout<<'\n';
+
 
 
 	return 0;

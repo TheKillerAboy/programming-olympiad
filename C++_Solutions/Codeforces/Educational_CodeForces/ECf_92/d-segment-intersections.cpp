@@ -2,12 +2,12 @@
 
 using namespace std;
 
-#define FOR(i_,a_) for(int i_=0;i_<a_;++i_)
-#define FORS(s_,i_,a_) for(int i_=s_;i_<a_;++i_)
-#define FORR(i_,a_) for(int i_=a_-1;i_>=0;--i_)
-#define FORI(i_,a_) for(int i_=1;i_<=a_;++i_)
+#define FOR(i_,a_) for(long long i_=0;i_<a_;++i_)
+#define FORS(s_,i_,a_) for(long long i_=s_;i_<a_;++i_)
+#define FORR(i_,a_) for(long long i_=a_-1;i_>=0;--i_)
+#define FORI(i_,a_) for(long long i_=1;i_<=a_;++i_)
 #define FORA(i_,a_) for(auto i_:a_)
-#define FOR1(i_,a_) for(int i_=1;i_<a_;++i_)
+#define FOR1(i_,a_) for(long long i_=1;i_<a_;++i_)
 #define FORIT(it_,c_) for(auto it_ = c_.begin(); it_!=c_.end();++it_)
 
 #define _ cout<<' ';
@@ -35,13 +35,47 @@ template<typename T> void TRACEV(T* b, T* e){if(b==e){TRACEV("[]");return;}TRACE
 template<typename T> void TRACE(T t){TRACEV(t);_N;}
 template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TRACE(args...);}
 
-#define ll long long int
-#define ull unsigned long long int
-#define pii pair<int,int>
+// #define ll long long long long
+// #define ull unsigned long long long long
+#define pii pair<long long,long long>
+
+long long t;
+long long n,k;
+long long l1,r1;
+long long l2,r2;
 
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+	cin>>t;
+	while(t--){
+		cin>>n>>k;
+		cin>>l1>>r1;
+		cin>>l2>>r2;
+		if(l2<l1) swap(l1,l2), swap(r1,r2);
+		long long extra = max((long long)0,min(r2,r1)-max(l1,l2));
+		long long A = max((long long)0,l2-r1);
+		if(A == 0) k-=extra*n;
+		long long out = 0;
+		if(k<=0) cout<<out<<'\n';
+		else{
+			long long index = 0;
+			while(k>0 && index<n){
+				long long c = max(r2,r1)-min(l1,l2) - extra;
+				if(A+min(c,k)<2*k || index == 0){
+					out += A+min(c,k);
+					k-=min(c,k);
+				}
+				else break;
+				index++;
+			}
+			if(k<=0) cout<<out<<'\n';
+			else{
+				out += 2*k;
+				cout<<out<<'\n';
+			}
+		}
+	}
 
 	return 0;
 }

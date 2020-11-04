@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
-
+ 
 using namespace std;
-
+ 
 #define FOR(i_,a_) for(int i_=0;i_<a_;++i_)
 #define FORS(s_,i_,a_) for(int i_=s_;i_<a_;++i_)
 #define FORR(i_,a_) for(int i_=a_-1;i_>=0;--i_)
@@ -9,7 +9,7 @@ using namespace std;
 #define FORA(i_,a_) for(auto i_:a_)
 #define FOR1(i_,a_) for(int i_=1;i_<a_;++i_)
 #define FORIT(it_,c_) for(auto it_ = c_.begin(); it_!=c_.end();++it_)
-
+ 
 #define _ cout<<' ';
 #define _N cout<<'\n';
 #define _T cout<<'\t';
@@ -34,110 +34,121 @@ TRACED("[");TRACEV(*it);for(++it;it!=t.end();++it){TRACED(", ");TRACEV(*it);}TRA
 template<typename T> void TRACEV(T* b, T* e){if(b==e){TRACEV("[]");return;}TRACED("[");TRACEV(*b);while(++b!=e){TRACED(", ");TRACEV(*b);}TRACED("]");}
 template<typename T> void TRACE(T t){TRACEV(t);_N;}
 template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TRACE(args...);}
-
+ 
 #define ll long long int
 #define ull unsigned long long int
 #define pii pair<int,int>
-#define SSIZE (int)1e5+5
+#define SSIZE (int)1e4+5
 #define DSSIZE 2*(int)1e5+5
 #define BSIZE (int)1e6+5
-
-map<int,list<int>> connections;
-map<int,list<int>> connections_return;
-map<pii,int> costs;
+ 
+vector<vector<pii>> connections;
 vector<int> costs_val;
-map<pii,int> weights_;
 int n,m;
-
-bool finds_end(map<int,int>& parent, map<pii,int>& weights, int max_cost){
-	list<int> queue;
-	set<int> visted;
-	queue.push_back(0);
+ 
+vector<int> pair_v,pair_u;
+vector<int> dist;
+ 
+bool BFS(int max_edge){
+	set<int> queue;
+	FORI(v,n){
+		if(pair_v[v] == 0){
+			dist[v] = 0;
+			queue.insert(v);
+		}
+		else dist[v] = INT_MAX;
+	}
+	dist[0] = INT_MAX;
+	int loop = 0;
 	while(!queue.empty()){
-		int cur_node = queue.front();
-		queue.pop_front();
-		visted.insert(cur_node);
-		FORA(next_node, connections[cur_node]){
-			if(costs[{cur_node,next_node}]<=max_cost){
-				if(weights[{cur_node,next_node}]>0){
-					if(visted.find(next_node)==visted.end()){
-						queue.push_back(next_node);
-						parent[next_node] = cur_node;
-					}
+		int v = *queue.begin();
+		queue.erase(queue.begin());
+		if(dist[v]<dist[0]){
+			auto it = connections[v].begin();
+			while(it!=connections[v].end() && (*it).first <= max_edge){
+				int u = (*it).second;
+				if(dist[pair_u[u]] == INT_MAX){
+					dist[pair_u[u]] = dist[v] + 1;
+					queue.insert(pair_u[u]);
 				}
+				it++;
 			}
 		}
-		FORA(prev_node, connections_return[cur_node]){
-			if(costs[{prev_node,cur_node}]<=max_cost){
-				if(weights[{cur_node,prev_node}]>0){
-					if(visted.find(prev_node)==visted.end()){
-						queue.push_back(prev_node);
-						// TRACE(cur_node,prev_node);
-						parent[prev_node] = cur_node;
-					}
+		loop++;
+	}
+	return dist[0] != INT_MAX;
+}
+ 
+bool DFS(int v, int max_edge){
+	if(v!=0){
+		auto it = connections[v].begin();
+		while(it!=connections[v].end() && (*it).first <= max_edge){
+			int u = (*it).second;
+			if(dist[pair_u[u]] == dist[v]+1){
+				if(DFS(pair_u[u], max_edge)){
+					pair_u[u] = v;
+					pair_v[v] = u;
+					return true;
 				}
 			}
-		}
+			it++;
+		}	
+		dist[v] = INT_MAX;
+		return false;
 	}
-	return visted.find(2*n+1)!=visted.end();
+	return true;
 }
-
-int max_flow(int max_cost){
-	map<int,int> parent;
-	auto weights  = weights_;
-	int out = 0;
-	while(finds_end(parent,weights,max_cost)){
-		int cur_node = 2*n+1;
-		while(cur_node!=0){
-			weights[{parent[cur_node],cur_node}]=0;
-			weights[{cur_node,parent[cur_node]}]=1;
-			cur_node = parent[cur_node];
+ 
+int loop = 0;
+ 
+int hopcroft_karp_algorithm(int max_edge){
+	FORI(i,n) pair_v[i] = 0;
+	FORI(i,n) pair_u[i] = 0;
+	int matchings = 0;
+	while(BFS(max_edge)){
+		FORI(v,n){
+			if(pair_v[v]==0){
+				if(DFS(v,max_edge)) matchings+=1;
+			}
 		}
-		parent.clear();
-		out++;
+		if(matchings==n) break;
 	}
-	return out;
+	return matchings;
 }
-
+ 
 int bs(int l, int r){
 	int mid = (l+r)>>1;
+	// if(n==9999){
+	// 	TRACE(l,r,mid);
+	// 	if(loop == 7) return r;
+	// 	loop++;
+	// }
 	if(l+1==r)return r;
-	if(max_flow(costs_val[mid])==n) return bs(l,mid);
+	if(hopcroft_karp_algorithm(costs_val[mid])==n) return bs(l,mid);
 	else return bs(mid,r);
 }
-
+ 
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
 	cin>>n>>m;
 	int v,u,c;
-	costs_val.reserve(m);
+	connections.resize(n+1);
+	costs_val.resize(m);
+	pair_v.resize(n+1);
+	pair_u.resize(n+1);
+	dist.resize(n+1);
 	FOR(i,m){
 		cin>>v>>u>>c;
-		u+=n;
-		connections[v].push_back(u);
-		connections_return[u].push_back(v);
-		costs[{v,u}] = c;
-		costs_val.push_back(c);
-		weights_[{v,u}] = 1;
-		weights_[{u,v}] = 0;
+		connections[v].push_back({c,u});
+		costs_val[i] = c;
 	}
+	FORI(v,n) sort(connections[v].begin(),connections[v].end());
 	sort(costs_val.begin(),costs_val.end());
-	FORI(i,n){
-		connections[0].push_back(i);
-		connections[n+i].push_back(2*n+1);
-		connections_return[i].push_back(0);
-		connections_return[2*n+1].push_back(i+n);
-		costs[{0,i}] = 0;
-		costs[{n+i,2*n+1}] = 0;
-		weights_[{0,i}] = 1;
-		weights_[{n+i,2*n+1}] = 1;
-		weights_[{i,0}] = 0;
-		weights_[{2*n+1,i+n}] = 0;
-	}
 	// TRACE(max_flow(costs_val[m-1]));
-	if(max_flow(costs_val[m-1])==n) cout<<costs_val[bs(-1,m-1)]<<'\n';
+	// TRACE(hopcroft_karp_algorithm(costs_val[m-1]));
+	if(hopcroft_karp_algorithm(costs_val[m-1])==n) cout<<costs_val[bs(-1,m-1)]<<'\n';
 	else cout<<-1<<'\n';
-
+ 
 	return 0;
 }

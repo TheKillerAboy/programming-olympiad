@@ -39,9 +39,22 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define ull unsigned long long int
 #define pii pair<int,int>
 
+int n,t;
+int arr[100];
+
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+	cin>>t;
+	while(t--){
+		cin>>n;
+		FOR(i,n) cin>>arr[i];
+		FOR(i,n){
+			if(i%2==1)cout<<'-';
+			cout<<abs(arr[i])<<' ';
+		}
+		cout<<'\n';
+	}
 
 	return 0;
 }
