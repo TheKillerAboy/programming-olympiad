@@ -17,10 +17,10 @@ int main(int argc, char const *argv[]) {
 
   for(auto let:word){
     if(isConsonant(let)){
-      out += let+'o'+let;
+      out = out+let+'o'+let;
     }
     else{
-      out += let;
+      out = out+let;
     }
   }
 
