@@ -41,30 +41,44 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define SSIZE (int)1e5+5
 #define BSIZE (int)1e6+5
 
-int t;
-int n;
+int t,n;
 int arr[3*SSIZE];
-pii arro[3*SSIZE];
 
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+
 	cin>>t;
 	while(t--){
 		cin>>n;
-		list<list<int>> partitions;
+		bool found = false;
 		FOR(i,n) cin>>arr[i];
-		FOR(i,n) arro[i] = {arr[i],i};
-		sort(arro,arro+n,greater<pii>());
-		int found = -1;
-		FOR(j,n){
-			int i = arro[j].second;
-			if((i>0&&arr[i]>arr[i-1])||(i<n-1&&arr[i]>arr[i+1])){
-				found = i+1;
+		FOR(i,n){
+			int size = arr[i];
+			int l = i;
+			int r = i;
+			bool change = true;
+			while(change){
+				change = false;
+				while(l-1>=0 && arr[l-1]<size){
+					size++;
+					l--;
+					change = true;
+				}
+				while(r+1<n && arr[r+1]<size){
+					size++;
+					r++;
+					change = true;
+				}
+			}
+			if(l==0&&r==n-1){
+				found = true;
+				cout<<i+1<<'\n';
 				break;
 			}
 		}
-		cout<<found<<'\n';
+		if(!found)cout<<-1<<'\n';
+
 	}
 
 	return 0;

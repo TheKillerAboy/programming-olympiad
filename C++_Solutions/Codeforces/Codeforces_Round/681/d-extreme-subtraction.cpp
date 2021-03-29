@@ -42,20 +42,9 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define BSIZE (int)1e6+5
 
 int t,n;
-int arr[SSIZE];
-
-void action(){
-	int j = n;
-	FOR1(i,n){
-		if(arr[i]>arr[i-1]) j = min(j,i);
-	}
-	int k = n;
-	FORS(j,i,n){
-		if(arr[i]<arr[i-1]) k = min(k,i);
-	}
-	FORS(j,i,k) arr[i] -= arr[j-1];
-	FOR(i,j) arr[i] = 0;
-}
+int v[SSIZE];
+int a[SSIZE];
+int b[SSIZE];
 
 int main(){
 	cin.tie(0);
@@ -63,13 +52,15 @@ int main(){
 	cin>>t;
 	while(t--){
 		cin>>n;
-		FOR(i,n) cin>>arr[i];
-		action();
-		reverse(arr, arr + n); 
-		action();
-		bool pos = true;
-		FOR(i,n) if(arr[i]!=0) pos = false;
-		cout<<(pos?"YES":"NO")<<'\n';
+		FOR(i,n) cin>>v[i];
+		a[0] = v[0];
+		b[0] = 0;
+		FOR1(i,n){
+			a[i] = max(min(v[i]-b[i-1],a[i-1]),0);
+			b[i] = v[i] - a[i];
+		}
+		reverse(a,a+n);
+		cout<<((is_sorted(a,a+n)&&is_sorted(b,b+n))?"YES":"NO")<<'\n';
 	}
 
 	return 0;

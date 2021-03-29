@@ -7,13 +7,16 @@ using namespace std;
 vector<string> digits = {"ONE","TWO","THREE","FOUR","FIVE","SIX","SEVEN","EIGHT","NINE"};
 
 bool has_digit(string digit, string word){
-	if(digit.length() == 0){
-		return true;
+	auto start = 0;
+	bool pos = true;
+	for(auto let : digit){
+		// cout<<start<<'\n';
+		if(start==-1||start==word.size()) pos = false;
+		start = word.find(let,start);
+		if(start!=-1)start++;
 	}
-	if(word.find(digit[0]) != string::npos){
-		return has_digit(digit.substr(1),word.substr(word.find(digit[0])+1));
-	}
-	return false;
+	if(start==-1) pos = false;
+	return pos;
 }
 
 int main(){

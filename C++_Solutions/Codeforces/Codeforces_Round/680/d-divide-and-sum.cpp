@@ -41,9 +41,54 @@ template<typename T,typename... Ts> void TRACE(T t,Ts... args){TRACEV(t); _T; TR
 #define SSIZE (int)1e5+5
 #define BSIZE (int)1e6+5
 
+#define MOD ((int)998244353)
+
+int add(int a_, int b_){
+	long long int a=(long long int)a_,b=(long long int)b_;
+	return (a+b)%MOD;
+}
+int neg(int a_, int b_){
+	long long int a=(long long int)a_,b=(long long int)b_;
+	return (a-b)%MOD;
+}
+int mul(int a_, int b_){
+	long long int a=(long long int)a_,b=(long long int)b_;
+	return (a*b)%MOD;
+}
+int power(int a, int n){
+	if(n==0)return 1;
+	if(n==1)return a;
+	int temp = power(a,n/2);
+	return mul(temp,mul(temp,n%2==1?a:1));
+}
+int divide(int a, int b){
+	int b_inv = power(b,MOD-2);
+	return mul(a,b_inv);
+}
+int FAC[3*SSIZE];
+
+int choose(int n, int k){
+	return divide(FAC[n],mul(FAC[n-k],FAC[k]));
+}
+
+int arr[3*SSIZE];
+int n;
+
 int main(){
 	cin.tie(0);
 	ios::sync_with_stdio(false);
+	FAC[0] = 1;
+	FAC[1] = 1;
+	FORS(2,i,3*SSIZE) FAC[i] = mul(FAC[i-1],i);
+	cin>>n;
+	FOR(i,2*n) cin>>arr[i];
+	sort(arr,arr+2*n);
+	int out = 0;
+	FOR(i,n){
+		out = add(out, neg(arr[2*n-1-i],arr[i]));
+	}
+	out = mul(choose(2*n,n),out);
+	cout<<out<<'\n';
 
 	return 0;
 }
