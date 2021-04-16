@@ -3,38 +3,12 @@
 	"tasks": [
 		{
 			"type": "shell",
-			"label": "C/C++: g++.exe build active file",
-			"command": "C:\\MinGW\\bin\\g++.exe",
+			"label": "C/C++: build and run inputs",
+			"command": "codeScraper.exe",
 			"args": [
-				"-g",
-				"${file}",
-				"-o",
-				"${fileDirname}\\${fileBasenameNoExtension}.exe"
+				"run_inputs",
+				"${file}"
 			],
-			"options": {
-				"cwd": "C:\\MinGW\\bin"
-			},
-			"problemMatcher": [
-				"$gcc"
-			],
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
-		},
-		{
-			"type": "shell",
-			"label": "C/C++: cpp.exe build active file",
-			"command": "C:\\MinGW\\bin\\cpp.exe",
-			"args": [
-				"-g",
-				"${file}",
-				"-o",
-				"${fileDirname}\\${fileBasenameNoExtension}.exe"
-			],
-			"options": {
-				"cwd": "${workspaceFolder}"
-			},
 			"problemMatcher": [
 				"$gcc"
 			],

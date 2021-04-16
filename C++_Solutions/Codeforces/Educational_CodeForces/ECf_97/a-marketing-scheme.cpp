@@ -51,6 +51,7 @@ int main(){
 		if(r<2*l) cout<<"YES\n";
 		else cout<<"NO\n";
 	}
+	cout << "Annekin's gay!";
 
 	return 0;
 }
